@@ -1,0 +1,49 @@
+{
+  "seeds": "1..1000",
+  "rulesVersion": 1,
+  "note": "脚本策略对比，不代表真实玩家胜率或阅读时长。",
+  "results": [
+    {
+      "policy": "保守取稳",
+      "runs": 1000,
+      "endings": {
+        "成功结丹": 1000
+      },
+      "averageActions": 12,
+      "averageLifeLeft": 6,
+      "maxSaveBytes": 4733
+    },
+    {
+      "policy": "只看最高收益",
+      "runs": 1000,
+      "endings": {
+        "渡劫失败": 784,
+        "心魔失控": 216
+      },
+      "averageActions": 5,
+      "averageLifeLeft": 12.55,
+      "maxSaveBytes": 3756
+    },
+    {
+      "policy": "调查后选择",
+      "runs": 1000,
+      "endings": {
+        "成功结丹": 1000
+      },
+      "averageActions": 13.32,
+      "averageLifeLeft": 4.68,
+      "maxSaveBytes": 6131
+    },
+    {
+      "policy": "冒险后补救",
+      "runs": 1000,
+      "endings": {
+        "成功结丹": 636,
+        "寿尽坐化": 364
+      },
+      "averageActions": 12.15,
+      "averageLifeLeft": 3.58,
+      "maxSaveBytes": 7013
+    }
+  ]
+}

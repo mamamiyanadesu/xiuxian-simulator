@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>此劫难渡 · 夜行灯录</title>
+<style>
+:root{color-scheme:dark;background:#14232b;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#e1e5e6;font-synthesis:none}
+.b-body{margin:0;background:#14232b}
+.b-root,.b-root *{box-sizing:border-box}
+.b-root{max-width:640px;margin:0 auto;padding:22px 26px 14px;font-size:15px;line-height:1.7}
+.b-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.b-brand{font-size:17px;font-weight:600;letter-spacing:.12em;color:#f0ece1}
+.b-person{font-size:12px;color:#bbc4c8;letter-spacing:.08em}
+.b-lantern{display:inline-block;margin-right:7px;color:#efbd72;font-size:16px}
+.b-status{display:grid;grid-template-columns:1.65fr 1fr .75fr;gap:20px;margin:20px 0 23px;padding-bottom:18px;border-bottom:1px solid #435057}
+.b-stat-label{font-size:12px;color:#b8c2c7}
+.b-number{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:25px;line-height:1.25;font-variant-numeric:tabular-nums;color:#f1eee6}
+.b-number small{font-size:13px;color:#b4c0c6;margin-left:4px}
+.b-number.b-life{color:#efbd72}
+.b-progress{height:3px;margin-top:9px;background:#425056}
+.b-progress span{display:block;width:40%;height:3px;background:#dfb679}
+.b-kicker{color:#c5af89;font-size:12px;letter-spacing:.12em;display:flex;align-items:center;gap:8px}
+.b-kicker:after{content:"";width:28px;height:1px;background:#9a8460}
+.b-title{margin:6px 0 17px;font-size:28px;font-weight:500;letter-spacing:.08em;line-height:1.35;color:#f4ede0}
+.b-story{font-size:15px;line-height:1.8;color:rgba(255,255,255,.88);max-width:36em}
+.b-story p{margin:0 0 10px}
+.b-story q{quotes:none;color:#f0d6ac}
+.b-clues{display:flex;flex-wrap:wrap;gap:6px 15px;margin:16px 0 20px;font-size:12px;color:#d2b582}
+.b-clues span{white-space:nowrap}.b-clues span:before{content:"◇";margin-right:6px;color:#d2b582}
+.b-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.b-root button{font:inherit;cursor:pointer;border-radius:3px;min-height:46px;transition:background-color .15s,color .15s;border:1px solid #5a6568;color:#e4e7e6;background:#1d3039;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left}
+.b-root button:hover{background:#30434b}.b-root button:focus-visible{outline:2px solid #f8d699;outline-offset:3px}
+.b-root button:active{background:#415058}
+.b-root button.b-primary{background:#e3b779;border-color:#e3b779;color:#202d30;font-weight:600}
+.b-root button.b-primary:hover{background:#f0cd98}
+.b-cost{font-size:11px;white-space:nowrap;opacity:.85;font-weight:400}
+.b-root button.b-leave{border-color:transparent;background:transparent;color:#c0c9cd}
+.b-root button.b-leave:hover{background:#243740}
+.b-footer{display:flex;align-items:center;gap:8px;margin-top:19px;padding-top:10px;border-top:1px solid #435057}
+.b-root .b-tool{border:0;min-height:44px;background:transparent;font-size:13px;padding:5px 8px;color:#c2cbce;justify-content:center}
+.b-root .b-tool:last-child{margin-left:auto;color:#899a9f;cursor:not-allowed}
+.b-feedback{margin:14px 0 0;padding:12px;background:#203842;border:1px solid #526269;font-size:14px;color:#ede9df;line-height:1.8}
+.b-feedback[hidden]{display:none}
+@media(max-width:350px){.b-root{padding:18px 18px 12px}.b-status{gap:14px;margin:16px 0 19px}.b-title{font-size:26px}.b-actions{gap:7px}.b-root button{padding:8px;font-size:14px}.b-cost{font-size:10px}.b-story{line-height:1.75}}
+@media(prefers-reduced-motion:reduce){.b-root button{transition:none}}
+</style>
+</head>
+<body class="b-body">
+<main class="b-root">
+ <header class="b-head"><div class="b-brand">此劫难渡</div><div class="b-person"><span class="b-lantern" aria-hidden="true">◈</span>筑基散修</div></header>
+ <section class="b-status" aria-label="修行状态">
+  <div><span class="b-stat-label">修为</span><span class="b-number">40<small>/100</small></span><div class="b-progress" role="meter" aria-label="修为" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40"><span></span></div></div>
+  <div><span class="b-stat-label">余寿</span><span class="b-number b-life" id="b-life">18</span></div>
+  <div><span class="b-stat-label">心魔</span><span class="b-number">0</span></div>
+ </section>
+ <article>
+  <div class="b-kicker">青石坊 · 灯下见闻</div>
+  <h1 class="b-title">最后一炉</h1>
+  <div class="b-story">
+   <p>摊主正在拆招牌。见你停下，他又把“清仓”二字扶正了。</p>
+   <p><q>“最后一炉养元丹。家师闭关去了，往后有灵石也买不着。”</q></p>
+   <p>桌上剩下三瓶，封口都很新。旁边竹篓里却有几十张揭下来的旧丹签。你认出其中一张，上个月来时就贴在这里。</p>
+   <p>你问为何换签。他捻掉瓶底一点红末。</p>
+   <p><q>“师父嫌从前的字不吉利，耽误药效。”</q></p>
+   <p>他愿意拿一瓶抵工钱，只需你替他温炉半日。若肯帮着把旧丹重新封好，整炉余药都归你。</p>
+  </div>
+  <div class="b-clues" aria-label="已见线索"><span>新封口</span><span>旧丹签</span><span id="b-clue">瓶底红末</span></div>
+  <div class="b-actions" aria-label="作出选择">
+   <button class="b-primary" type="button" data-b-action="inspect"><span>先验药</span><span class="b-cost">寿元 −1</span></button>
+   <button type="button" data-b-action="one"><span>只取一瓶</span><span class="b-cost">修为 +10</span></button>
+   <button type="button" data-b-action="all"><span>包下余药</span><span class="b-cost">修为 +22</span></button>
+   <button class="b-leave" type="button" data-b-action="leave"><span>离开</span><span aria-hidden="true">↗</span></button>
+  </div>
+  <div class="b-feedback" id="b-feedback" role="status" hidden></div>
+ </article>
+ <nav class="b-footer" aria-label="修行工具"><button type="button" class="b-tool" data-b-action="look">内观</button><button type="button" class="b-tool" data-b-action="rest">静心</button><button type="button" class="b-tool" disabled title="修为达到 100 后可准备渡劫">渡劫 · 修为未足</button></nav>
+</main>
+<script>
+(()=>{let inspected=false;const root=document.querySelector('.b-root');const feedback=document.getElementById('b-feedback');const messages={one:'温炉半日，便可取走一瓶。药力之外，还有些事尚未查明。',all:'摊主立刻铺开新丹签。“道友爽快。这一炉，都是你的。”',leave:'你再看了一眼丹号。日后若再碰见，未必认不出来。',look:'你收敛神识。眼下经脉通畅，尚无异常征兆。',rest:'你把目光从整炉余药上挪开。寿元有限，眼前的便宜却总像最后一次。'};root.addEventListener('click',event=>{const button=event.target.closest('[data-b-action]');if(!button)return;const action=button.dataset.bAction;if(action==='inspect'){if(!inspected){inspected=true;document.getElementById('b-life').textContent='17';document.getElementById('b-clue').textContent='杂质未净';button.innerHTML='<span>已验明</span><span class="b-cost">可重新炼化</span>';}feedback.textContent='药力确实充沛，但杂质未炼净。直接服用可能留下丹毒，重新炼化可以避开。';}else{feedback.textContent=messages[action];}feedback.hidden=false;});})();
+</script>
+</body>
+</html>

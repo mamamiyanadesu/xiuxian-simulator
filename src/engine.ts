@@ -88,6 +88,15 @@ export function knownTribulationRisks(s: Game): string[] {
   s.hazards.forEach(h => risks.push(h.diagnosed ? `${h.kind}尚未处理，无法安然渡劫。` : '身体仍有未查明的征兆，带病引雷会失败。'));
   return risks;
 }
+// A present-state budget, not a forecast: new injuries and contract decisions are not included.
+export function closingBudget(s: Game) {
+  const diagnose = s.hazards.some(h => !h.diagnosed) ? 1 : 0;
+  const remedy = s.hazards.length * RULES.remedyLife;
+  const meditate = Math.max(0, Math.ceil((s.heartDemon - RULES.tribulationHeart + 1) / RULES.meditationReduction));
+  const reserve = 2 + diagnose + remedy + meditate;
+  return { reserve, spendable: s.life - reserve, diagnose, remedy, meditate,
+    cultivationGap: Math.max(0, RULES.threshold - s.cultivation + s.hazards.length * RULES.remedyCultivation) };
+}
 function terminal(s: Game) {
   if (s.life <= 0) s.ending = { title: '寿尽坐化', reasons: ['最后一次行动耗尽了余寿。修为仍在，承载它的人已留不住了。'] };
   else if (s.heartDemon >= RULES.heartLimit) s.ending = { title: '心魔失控', reasons: ['心魔累积到 100。你再听不清行气口诀，耳边尽是还没拿到手的好处。'] };
@@ -172,5 +181,5 @@ export function transition(previous: Game, a: Action, expectedRevision = previou
   return s;
 }
 
-export function riskLabel(chance: number) { return chance >= .6 ? '风险高' : chance >= .3 ? '风险中' : chance > 0 ? '风险低' : '无新增隐患'; }
+export function riskLabel(chance: number) { return chance >= .5 ? '风险高' : chance >= .2 ? '风险中' : chance > 0 ? '风险低' : '无新增隐患'; }
 export const hazardKinds = Object.keys(SYMPTOMS) as HazardKind[];

@@ -631,3 +631,19 @@ body[data-input=keyboard] .view {
 .blocked-reason:before {
   content:"需留意 · ";
 }
+.closing-budget {
+  margin: -12px 0 26px;
+  padding: 10px 0 14px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+.closing-budget p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.closing-budget strong { font-weight: 500; }
+.closing-budget small { display: block; font-size: 13px; margin-top: 5px; }
+.closing-budget.tight { color: var(--danger); }

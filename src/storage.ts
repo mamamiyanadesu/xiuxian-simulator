@@ -3,9 +3,10 @@ import { EVENT_MAP } from './events.ts';
 import { hazardKinds } from './engine.ts';
 import type { Game } from './types.ts';
 
-export const SAVE_KEY = 'cijienandu.save.v1';
+export const SAVE_KEY = 'cijienandu.save.rules2';
+export const LEGACY_SAVE_KEY = 'cijienandu.save.v1';
 type StorageLike = Pick<Storage, 'getItem' | 'setItem'>;
-export type LoadResult = { kind: 'empty' } | { kind: 'valid'; game: Game } |
+export type LoadResult = { kind: 'empty'; message?: string } | { kind: 'valid'; game: Game } |
   { kind: 'invalid' | 'unavailable'; message: string };
 const obj = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
 const int = (v: unknown, max = 10000): v is number => typeof v === 'number' && Number.isInteger(v) && v >= 0 && v <= max;
@@ -45,7 +46,10 @@ export function validGame(v: unknown): v is Game {
 }
 export function loadGame(storage: StorageLike): LoadResult {
   let raw: string | null;
-  try { raw = storage.getItem(SAVE_KEY); } catch { return { kind: 'unavailable', message: '浏览器未允许本地存档。本局仍可修行，关闭页面后无法恢复。' }; }
+  try {
+    raw = storage.getItem(SAVE_KEY);
+    if (raw === null && storage.getItem(LEGACY_SAVE_KEY) !== null) return { kind: 'empty', message: '新版余寿缩为 12，机缘与补救收益已调整。旧版行笺另存保留，启程将开始新版的一局。' };
+  } catch { return { kind: 'unavailable', message: '浏览器未允许本地存档。本局仍可修行，关闭页面后无法恢复。' }; }
   if (raw === null) return { kind: 'empty' };
   try {
     if (raw.length > 300000) throw new Error('oversize');

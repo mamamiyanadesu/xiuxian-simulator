@@ -14,9 +14,9 @@ export const EVENTS: Encounter[] = [
     truth: '药确实有用，但省了清除杂质的工序。旧签与红末早已露出端倪。',
     investigation: '半粒丹药化开，药气下沉，红末浮在水面。清杂那道火候省了。你记下丹号，也试出了重炼的火候。',
     choices: [
-      { id: 'refine', label: '重炼后取药', gain: 10, heart: 5, investigated: true, setFlags: ['pill_visited', 'batch_known'], result: '你补足火候，将红末滤掉。摊主说你太讲究，又把滤出的红末装进另一只瓶。' },
-      { id: 'one', label: '温炉，取一瓶', gain: 12, heart: 15, risk: { kind: '丹毒', chance: .3 }, setFlags: ['pill_visited'], result: '药力确实涨了。摊主称赞你识货，顺手把清仓的牌子擦得更亮。' },
-      { id: 'all', label: '封好旧丹，全拿走', gain: 22, heart: 30, risk: { kind: '丹毒', chance: .6 }, setFlags: ['pill_visited'], result: '你替旧丹换上新签，换来整炉药。离开时，下一个客人正问是不是新炼的。摊主指了指你的背影。' },
+      { id: 'refine', label: '重炼后取药', gain: 14, heart: 5, investigated: true, setFlags: ['pill_visited', 'batch_known'], result: '你补足火候，将红末滤掉。摊主说你太讲究，又把滤出的红末装进另一只瓶。' },
+      { id: 'one', label: '温炉，取一瓶', gain: 16, heart: 10, risk: { kind: '丹毒', chance: .25 }, setFlags: ['pill_visited'], result: '药力确实涨了。摊主称赞你识货，顺手把清仓的牌子擦得更亮。' },
+      { id: 'all', label: '封好旧丹，全拿走', gain: 22, heart: 22, risk: { kind: '丹毒', chance: .6 }, setFlags: ['pill_visited'], result: '你替旧丹换上新签，换来整炉药。离开时，下一个客人正问是不是新炼的。摊主指了指你的背影。' },
       { id: 'leave', label: '记住丹号，离开', gain: 0, heart: 0, setFlags: ['pill_visited', 'batch_known'], result: '你没拿药，只记住了丹号。摊主说修行人疑心太重，容易生心魔。' },
     ],
   },
@@ -28,7 +28,7 @@ export const EVENTS: Encounter[] = [
     investigation: '看炉人掏出添药簿。前辈每到成丹便添新药，已经添了七回。你抄下日期，决定把时限写进正文。',
     choices: [
       { id: 'limit', label: '写定时限，只守一夜', gain: 6, heart: 2, result: '前辈读了三遍时限，少传了些真气。天亮后你准时离开。他说以后有大机缘再找你，这次没取契书。' },
-      { id: 'accept', label: '受真气，签原契书', gain: 22, heart: 30, contract: 'accept', result: '真气入体，确非虚言。你收起契书。纸尾写着，提前退出须归还本次所受的 22 修为。炉火还等着你。' },
+      { id: 'accept', label: '受真气，签原契书', gain: 22, heart: 22, contract: 'accept', result: '真气入体，确非虚言。你收起契书。纸尾写着，提前退出须归还本次所受的 22 修为。炉火还等着你。' },
       { id: 'leave', label: '婉拒好意', gain: 0, heart: 0, result: '你松开前辈的手。他已经握住下一位散修，叹了一口同样长的气。' },
     ],
   },
@@ -39,9 +39,9 @@ export const EVENTS: Encounter[] = [
     truth: '两个同伴都是赵道友的纸身，不能分担阵力。阵法可以轮班，独守的代价落在你一人身上。',
     investigation: '阵图标明须两名活人交替运转。你伸手碰那两位的腕脉，纸糊的皮肤凹了下去。赵道友赶紧把衣袖拉平。',
     choices: [
-      { id: 'rotate', label: '本人轮班，先定分成', gain: 10, heart: 5, investigated: true, setFlags: ['cave_visited'], result: '赵道友亲自接过阵盘。分宝时，他的两个纸身没有再占份额。你拿走写在纸上的那份。' },
+      { id: 'rotate', label: '本人轮班，先定分成', gain: 14, heart: 5, investigated: true, setFlags: ['cave_visited'], result: '赵道友亲自接过阵盘。分宝时，他的两个纸身没有再占份额。你拿走写在纸上的那份。' },
       { id: 'trust', label: '相信道友，先守阵', gain: 6, heart: 2, risk: { kind: '经脉暗伤', chance: .6 }, setFlags: ['cave_visited'], result: '“我寻路一功，这位破门一功，那位取宝一功。道友守阵，也算一功。”四份宝物，他自己面前放了三份。' },
-      { id: 'advance', label: '先给半卷功法，再守', gain: 12, heart: 15, risk: { kind: '经脉暗伤', chance: .3 }, setFlags: ['cave_visited'], result: '半卷功法已经到手，阵力却没少半分。赵道友出来时说，幸好事先说清，免得伤了和气。' },
+      { id: 'advance', label: '先给半卷功法，再守', gain: 16, heart: 10, risk: { kind: '经脉暗伤', chance: .25 }, setFlags: ['cave_visited'], result: '半卷功法已经到手，阵力却没少半分。赵道友出来时说，幸好事先说清，免得伤了和气。' },
       { id: 'leave', label: '退出这份交情', gain: 0, heart: 0, result: '赵道友说你不信朋友。洞口刮起一阵风，他连忙按住两个同伴。' },
     ],
   },
@@ -73,7 +73,7 @@ export const EVENTS: Encounter[] = [
     choices: [
       { id: 'outside', label: '只找外山药草', gain: 6, heart: 2, result: '你只在山外采药，各自拿走各自那份。两个新朋友负责提篮，倒确实任劳任怨。' },
       { id: 'rotate', label: '写定本人轮班', gain: 10, heart: 5, life: 2, result: '你这次连轮班时辰也写了进去。赵道友说朋友间何必如此，却把名字签得很清楚。' },
-      { id: 'again', label: '再信他一回', gain: 12, heart: 15, risk: { kind: '经脉暗伤', chance: .6 }, result: '新衣服很结实，纸身还是纸身。你守着生门，听见里面又在讨论谁的功劳更大。' },
+      { id: 'again', label: '再信他一回', gain: 16, heart: 10, risk: { kind: '经脉暗伤', chance: .6 }, result: '新衣服很结实，纸身还是纸身。你守着生门，听见里面又在讨论谁的功劳更大。' },
     ],
   },
   {
@@ -84,7 +84,7 @@ export const EVENTS: Encounter[] = [
     choices: [
       { id: 'patch', label: '补全基础周天再练', gain: 10, heart: 5, investigated: true, result: '你用旧法补上缺口。书生说这已经失了本门真意，转头却问能不能借去抄一遍。' },
       { id: 'copy', label: '替人抄书，换真气', gain: 6, heart: 2, result: '你只抄不练，按字数收了工钱。缺页仍是空白，你没有替它编一个结尾。' },
-      { id: 'practice', label: '照残卷速成', gain: 22, heart: 30, risk: { kind: '功法缺陷', chance: .6 }, result: '前八页确实进境神速。书生祝你早日有缘买下后卷，连折扣都替你留好了。' },
+      { id: 'practice', label: '照残卷速成', gain: 22, heart: 22, risk: { kind: '功法缺陷', chance: .6 }, result: '前八页确实进境神速。书生祝你早日有缘买下后卷，连折扣都替你留好了。' },
     ],
   },
   {
@@ -95,7 +95,7 @@ export const EVENTS: Encounter[] = [
     choices: [
       { id: 'pool', label: '在下游慢慢吐纳', gain: 6, heart: 2, result: '你坐在下游，收下剩余的灵气。守泉人巡视经过，说大家所得都源于同一眼泉。' },
       { id: 'shelter', label: '借岩窝避开水头', gain: 10, heart: 5, investigated: true, result: '急流擦着岩壁过去。你在水头之后引气，既没抢上游的位置，也没替上游承受冲击。' },
-      { id: 'rush', label: '钻裂口，抢开闸', gain: 22, heart: 30, risk: { kind: '经脉暗伤', chance: .6 }, result: '灵气与水头一齐撞进经脉。守泉人把裂口记在簿上，明日准备增设一个收费的位置。' },
+      { id: 'rush', label: '钻裂口，抢开闸', gain: 22, heart: 22, risk: { kind: '经脉暗伤', chance: .6 }, result: '灵气与水头一齐撞进经脉。守泉人把裂口记在簿上，明日准备增设一个收费的位置。' },
     ],
   },
   {
@@ -106,7 +106,7 @@ export const EVENTS: Encounter[] = [
     choices: [
       { id: 'roots', label: '只收老根', gain: 6, heart: 2, result: '你收下老根。药农留下新叶，说明年还能继续卖百年的，只须再描一个点。' },
       { id: 'sort', label: '分出可用的药性', gain: 10, heart: 5, investigated: true, result: '你挑出能炼化的部分。药农说如此细分，百年的名头就不好叫了。' },
-      { id: 'leaves', label: '整株炼化', gain: 12, heart: 15, risk: { kind: '丹毒', chance: .3 }, result: '一株进境抵得上数株。那未经化开的催生药性，也没有留在田里。' },
+      { id: 'leaves', label: '整株炼化', gain: 16, heart: 10, risk: { kind: '丹毒', chance: .25 }, result: '一株进境抵得上数株。那未经化开的催生药性，也没有留在田里。' },
     ],
   },
   {
@@ -117,7 +117,7 @@ export const EVENTS: Encounter[] = [
     choices: [
       { id: 'shore', label: '只在岸边引水', gain: 6, heart: 2, result: '你按岸边的活领了真气。船家抱怨修行人算得太清，数给你的却一缕不多。' },
       { id: 'unload', label: '卸一箱再推船', gain: 10, heart: 5, investigated: true, result: '船轻了，水也好推了。船家把留下的箱子藏在芦苇里，等下一位有缘人。' },
-      { id: 'push', label: '一并送过河', gain: 12, heart: 15, risk: { kind: '经脉暗伤', chance: .3 }, result: '你把船和两箱镇船铁都推过河。船家给了应许的真气，说这便是顺水人情。' },
+      { id: 'push', label: '一并送过河', gain: 16, heart: 10, risk: { kind: '经脉暗伤', chance: .25 }, result: '你把船和两箱镇船铁都推过河。船家给了应许的真气，说这便是顺水人情。' },
     ],
   },
   {
@@ -127,8 +127,8 @@ export const EVENTS: Encounter[] = [
     investigation: '你摸出旧凿痕下半句“护脉先行”。守崖人说那是旧法。你把旧法和捷径并排记下，缺的环节便显了出来。',
     choices: [
       { id: 'old', label: '仍按旧法修习', gain: 6, heart: 2, result: '旧法缓慢，行气首尾俱全。守崖人没有给你刻名字，倒也不必急着替你凿掉。' },
-      { id: 'complete', label: '补护脉，再试新法', gain: 10, heart: 5, investigated: true, result: '你把省掉的工夫补了回来。进境没碑上那么快，也不必拿自己去补一个浅坑。' },
-      { id: 'shortcut', label: '循名录走捷径', gain: 22, heart: 30, risk: { kind: '功法缺陷', chance: .6 }, result: '你照石壁运转，修为猛涨。守崖人取出凿子，两头都磨得很利。' },
+      { id: 'complete', label: '补护脉，再试新法', gain: 14, heart: 5, investigated: true, result: '你把省掉的工夫补了回来。进境没碑上那么快，也不必拿自己去补一个浅坑。' },
+      { id: 'shortcut', label: '循名录走捷径', gain: 22, heart: 22, risk: { kind: '功法缺陷', chance: .6 }, result: '你照石壁运转，修为猛涨。守崖人取出凿子，两头都磨得很利。' },
     ],
   },
   {
@@ -138,7 +138,7 @@ export const EVENTS: Encounter[] = [
     choices: [
       { id: 'listen', label: '就在门边听完', gain: 6, heart: 2, result: '你听全了经文。散场时前排仍在排功德，门边已经能看见山色。' },
       { id: 'sweep', label: '扫庭，换一次答疑', gain: 10, heart: 5, life: 2, result: '庵主答完一个实在问题。管事想给你记功德，你说工钱已经收了，把扫帚放回墙边。' },
-      { id: 'recruit', label: '替庵主传法招人', gain: 12, heart: 15, result: '你领到传法的真气，也记住了该如何劝人往前坐。离开时，总想再回头数数自己招来的那一排。' },
+      { id: 'recruit', label: '替庵主传法招人', gain: 16, heart: 10, result: '你领到传法的真气，也记住了该如何劝人往前坐。离开时，总想再回头数数自己招来的那一排。' },
     ],
   },
 ];

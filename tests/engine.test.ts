@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createGame, transition, currentEvent, actionBlock } from '../src/engine.ts';
 import { EVENTS, EVENT_MAP } from '../src/events.ts';
 import { validGame, loadGame, saveGame, SAVE_KEY } from '../src/storage.ts';
+import { RULES } from '../src/config.ts';
 import type { Game, Action } from '../src/types.ts';
 
 function at(id: string, rolls = .01): Game {
@@ -30,7 +31,7 @@ test('investigation preserves rolls, costs once, retains encounter and does not 
   const s = createGame(1); s.pending = { due: 3, gain: 22, investigated: false };
   const original = structuredClone(s);
   const n = step(s, { type: 'investigate' });
-  assert.equal(n.life, 17); assert.equal(n.encounterId, s.encounterId); assert.equal(n.encounterCount, 1);
+  assert.equal(n.life, RULES.startLife - 1); assert.equal(n.encounterId, s.encounterId); assert.equal(n.encounterCount, 1);
   assert.deepEqual(n.encounterState.rolls, s.encounterState.rolls); assert.deepEqual(n.pending, s.pending);
   assert.equal(transition(n, { type: 'investigate' }), n); assert.deepEqual(s, original);
 });
@@ -41,7 +42,7 @@ test('hazard is visible, diagnostic identifies source, remedy consumes exact cos
   s = step(s, { type: 'diagnose' }); assert.equal(s.hazards[0].diagnosed, true);
   assert.match(s.history.at(-1)!.result, /最后一炉/);
   const before = structuredClone(s); s = step(s, { type: 'remedy', kind: '丹毒' });
-  assert.equal(s.hazards.length, 0); assert.equal(s.cultivation, before.cultivation - 10); assert.equal(s.life, before.life - 2); assert.equal(s.encounterId, id);
+  assert.equal(s.hazards.length, 0); assert.equal(s.cultivation, before.cultivation - RULES.remedyCultivation); assert.equal(s.life, before.life - 2); assert.equal(s.encounterId, id);
   assert.match(s.history.at(-1)!.truth, /最后一炉/);
 });
 test('same hazard retains first cause and does not stack', () => {
@@ -102,7 +103,7 @@ test('every unresolved hazard fails tribulation and cites actual source', () => 
 });
 test('no meaningless diagnosis or meditation and no unaffordable remedy', () => {
   const s = createGame(4); assert.ok(actionBlock(s, { type: 'diagnose' })); assert.ok(actionBlock(s, { type: 'meditate' }));
-  s.cultivation = 9; s.hazards = [{ kind: '丹毒', source: 'last_batch', diagnosed: true, action: '取药' }];
+  s.cultivation = RULES.remedyCultivation - 1; s.hazards = [{ kind: '丹毒', source: 'last_batch', diagnosed: true, action: '取药' }];
   assert.match(actionBlock(s, { type: 'remedy', kind: '丹毒' })!, /还缺 1/);
 });
 test('event pool exhaustion uses repeatable lowest-tier quiet cultivation', () => {
@@ -139,7 +140,7 @@ test('every authored choice settles with exact displayed costs and serializes va
     const n = transition(s, { type: 'choose', id: c.id });
     const refund = c.refund === 'half' ? 11 : c.refund === 'full' ? 22 : 0;
     assert.equal(n.cultivation, 100 + c.gain - refund);
-    assert.equal(n.life, 18 - (c.life ?? 1)); assert.equal(n.heartDemon, c.heart);
+    assert.equal(n.life, RULES.startLife - (c.life ?? 1)); assert.equal(n.heartDemon, c.heart);
     assert.ok(validGame(n), `${e.id}/${c.id} invalid save`);
     if (c.cure) assert.equal(n.hazards.length, 0);
     if (c.contract === 'settle') assert.equal(n.pending, null);

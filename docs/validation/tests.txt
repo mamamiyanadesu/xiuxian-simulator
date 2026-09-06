@@ -2,28 +2,32 @@
 > xiuxian-simulator@0.1.0 test
 > node --test tests/*.test.ts
 
-✔ 12 authored nodes, meaningful investigation and four-tier choice data (1.046208ms)
-✔ same seed and actions reproduce exact game including all action rolls (1.799084ms)
-✔ investigation preserves rolls, costs once, retains encounter and does not move contract deadline (0.284708ms)
-✔ hazard is visible, diagnostic identifies source, remedy consumes exact costs (0.548958ms)
-✔ same hazard retains first cause and does not stack (0.193125ms)
-✔ stale revisions and feedback phase prevent duplicate deductions and encounter skips (0.131458ms)
-✔ contract followup arrives within next 1–2 encounters for 100 seeds (1.620375ms)
-✔ contract refund uses original received amount, negotiated exit requires actual investigation (0.17625ms)
-✔ early settlement preserves interrupted encounter rolls and research (0.160125ms)
-✔ pending contract blocks tribulation and unfinished contract appears in terminal epilogue (0.154917ms)
-✔ all four endings are determined after full action and record its cost (0.255292ms)
-✔ every unresolved hazard fails tribulation and cites actual source (0.202917ms)
-✔ no meaningless diagnosis or meditation and no unaffordable remedy (0.066791ms)
-✔ event pool exhaustion uses repeatable lowest-tier quiet cultivation (0.136208ms)
-✔ save and reload preserve feedback, pending contract and action outcome (0.746375ms)
-✔ corrupt, structurally malformed, incompatible and blocked storage handled without overwriting (0.232083ms)
-✔ every authored choice settles with exact displayed costs and serializes valid state (0.685291ms)
-ℹ tests 17
+✔ closing budget reserves a surviving tribulation, diagnoses together and includes treatment losses (3.437625ms)
+✔ a moderate gamble saves investigation time but its stored outcome can consume the safety margin (0.577084ms)
+✔ starting or saving a rules-2 run preserves the old rules-1 save byte for byte (0.842125ms)
+✔ resource tradeoffs survive a fixed-seed cohort instead of rewarding automatic full investigation (536.788833ms)
+✔ 12 authored nodes, meaningful investigation and four-tier choice data (0.726542ms)
+✔ same seed and actions reproduce exact game including all action rolls (1.262375ms)
+✔ investigation preserves rolls, costs once, retains encounter and does not move contract deadline (0.201291ms)
+✔ hazard is visible, diagnostic identifies source, remedy consumes exact costs (0.473375ms)
+✔ same hazard retains first cause and does not stack (0.164084ms)
+✔ stale revisions and feedback phase prevent duplicate deductions and encounter skips (0.13675ms)
+✔ contract followup arrives within next 1–2 encounters for 100 seeds (3.628709ms)
+✔ contract refund uses original received amount, negotiated exit requires actual investigation (0.237417ms)
+✔ early settlement preserves interrupted encounter rolls and research (0.219083ms)
+✔ pending contract blocks tribulation and unfinished contract appears in terminal epilogue (0.227459ms)
+✔ all four endings are determined after full action and record its cost (0.169625ms)
+✔ every unresolved hazard fails tribulation and cites actual source (0.168ms)
+✔ no meaningless diagnosis or meditation and no unaffordable remedy (0.350458ms)
+✔ event pool exhaustion uses repeatable lowest-tier quiet cultivation (0.281833ms)
+✔ save and reload preserve feedback, pending contract and action outcome (3.826042ms)
+✔ corrupt, structurally malformed, incompatible and blocked storage handled without overwriting (0.332792ms)
+✔ every authored choice settles with exact displayed costs and serializes valid state (0.887709ms)
+ℹ tests 21
 ℹ suites 0
-ℹ pass 17
+ℹ pass 21
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 112.540542
+ℹ duration_ms 672.938708

@@ -1,6 +1,6 @@
 import './style.css';
 import { RULES, SYMPTOMS } from './config.ts';
-import { currentEvent, createGame, transition, choiceBlock, choiceCost, actionBlock, lifeCost, knownTribulationRisks, riskLabel } from './engine.ts';
+import { currentEvent, createGame, transition, choiceBlock, choiceCost, actionBlock, lifeCost, knownTribulationRisks, riskLabel, closingBudget } from './engine.ts';
 import { loadGame, saveGame } from './storage.ts';
 import type { Action, Game, HazardKind, History } from './types.ts';
 
@@ -12,7 +12,7 @@ try { store = window.localStorage; } catch { store = { getItem() { throw Error()
 const loaded = loadGame(store);
 let game: Game | null = loaded.kind === 'valid' ? loaded.game : null;
 let playing = false;
-let warning = loaded.kind === 'invalid' || loaded.kind === 'unavailable' ? loaded.message : '';
+let warning = 'message' in loaded ? loaded.message ?? '' : '';
 let busy = false;
 let inputMode = 'pointer';
 document.addEventListener('keydown', () => { inputMode = 'keyboard'; document.body.dataset.input = inputMode; });
@@ -32,10 +32,18 @@ function metrics(s: Game) {
     <div><span class="metric-label">修为 <small>筑基 → 金丹</small></span><p class="number">${s.cultivation}<small> / ${RULES.threshold}</small></p><div class="track"><span style="transform:scaleX(${Math.min(1, s.cultivation / RULES.threshold)})"></span></div></div>
     <div><span class="metric-label">余寿</span><p class="number ${s.life <= 4 ? 'danger' : ''}">${s.life}<small> 寿元</small></p><div class="track life"><span style="transform:scaleX(${s.life / RULES.startLife})"></span></div></div>
     <div><span class="metric-label">心魔</span><p class="number ${s.heartDemon >= 60 ? 'danger' : ''}">${s.heartDemon}<small> / 100</small></p><div class="track heart"><span style="transform:scaleX(${s.heartDemon / 100})"></span></div></div>
-  </section>`;
+  </section>${s.phase === 'encounter' ? budget(s) : ''}`;
 }
 function journey(s: Game) {
   return `<div class="journey"><span>山门之外</span><span class="journey-line" aria-hidden="true"></span><span>第 ${s.encounterCount} 程 · ${esc(currentEvent(s).place)}</span></div>`;
+}
+function budget(s: Game) {
+  const b = closingBudget(s);
+  const parts = ['引雷 1', '留命 1'];
+  if (b.diagnose) parts.push(`内观 ${b.diagnose}`);
+  if (b.remedy) parts.push(`调息 ${b.remedy}`);
+  if (b.meditate) parts.push(`静心 ${b.meditate}`);
+  return `<aside class="closing-budget ${b.spendable <= 2 ? 'tight' : ''}" aria-label="收尾预算"><p><strong>${b.spendable >= 0 ? `还可支配 ${b.spendable} 寿元` : `常规收尾尚缺 ${-b.spendable} 寿元`}</strong><span>${s.hazards.length ? '补救后' : ''}修为还差 ${b.cultivationGap}</span></p><small>收尾预留 ${b.reserve} · ${parts.join('、')}${s.pending ? '；看炉约定另计' : ''}</small></aside>`;
 }
 function delta(h: History) {
   const labels = [['修为', h.delta.cultivation], ['余寿', h.delta.life], ['心魔', h.delta.heart]] as const;
@@ -49,13 +57,13 @@ function status(s: Game, actionable = true) {
 }
 function actions(s: Game) {
   const e = currentEvent(s);
-  return `<div class="choices" aria-label="作出选择">${e.investigation ? button(s.encounterState.investigated ? '线索已查明' : '先调查线索', 'investigate', { detail: s.encounterState.investigated ? '已取得依据，不再消耗寿元' : '余寿 −1 · 留在当前遭遇', disabled: actionBlock(s, { type: 'investigate' }), primary: !s.encounterState.investigated, revision: s.revision }) : ''}
+  return `<div class="choices" aria-label="作出选择">${e.investigation ? button(s.encounterState.investigated ? '线索已查明' : '先调查线索', 'investigate', { detail: s.encounterState.investigated ? '已取得依据，不再消耗寿元' : '余寿 −1 · 留在当前遭遇', disabled: actionBlock(s, { type: 'investigate' }), revision: s.revision }) : ''}
   ${e.choices.map(c => {
     const cost = choiceCost(s, c);
     let detail = `修为 ${c.gain - cost.cultivation >= 0 ? '+' : ''}${c.gain - cost.cultivation} · 余寿 −${cost.life} · 心魔 +${c.heart}`;
     detail += ` · ${riskLabel(c.risk?.chance ?? 0)}`;
     if (c.contract === 'accept') detail += ' · 须回来看炉；退契归还 22 修为';
-    return button(c.label, `choose:${c.id}`, { detail, disabled: choiceBlock(s, c), primary: !!c.investigated && !choiceBlock(s, c), revision: s.revision });
+    return button(c.label, `choose:${c.id}`, { detail, disabled: choiceBlock(s, c), revision: s.revision });
   }).join('')}</div>`;
 }
 function toolsBar(s: Game) {
@@ -65,7 +73,7 @@ function history(s: Game, reveal = false) {
   return `<details class="history" ${reveal ? 'open' : ''}><summary>${reveal ? '翻阅这一世的因果' : '翻阅行笺'} <span>${s.history.length} 次行动</span></summary>${s.history.length ? `<ol>${s.history.map(h => `<li><div class="history-heading"><span>${esc(h.title)}</span><strong>${esc(h.action)}</strong></div>${delta(h)}<p>${esc(h.result)}</p>${h.symptom ? `<p class="danger">${esc(h.symptom)}</p>` : ''}${reveal ? `<p class="truth">事后看清 · ${esc(h.truth)}</p>` : ''}</li>`).join('')}</ol>` : '<p>行笺尚未落笔。选择之后，得失都会记在这里。</p>'}</details>`;
 }
 function home() {
-  return `<section class="intro view"><div class="journey"><span>山野行笺</span><span class="journey-line" aria-hidden="true"></span><span>一名筑基散修的余途</span></div><h1 tabindex="-1">此劫，<br>还能渡过去吗。</h1><p class="intro-lead">你修到筑基，已经老了。<br>离金丹还差一程，离寿尽也只剩一程。</p><p>山外总有人愿意帮忙。有的要你守一夜炉，有的只把功法传给有缘人。好处都是真的，没说完的话也是。</p><div class="intro-rule"><span><b>40</b> 起始修为</span><span><b>18</b> 剩余寿元</span><span><b>100</b> 可引雷结丹</span></div><div class="entry-actions">${game ? button(game.phase === 'ended' ? '翻看上一世' : '继续修行', 'resume', { primary: true, detail: `${game.phase === 'ended' ? game.ending!.title : currentEvent(game).title} · 修为 ${game.cultivation} · 余寿 ${game.life}` }) : ''}${button(game || loaded.kind === 'invalid' ? '另起一世' : '启程修行', 'new', { primary: !game, detail: game ? '替换当前本地行笺，需确认' : '读线索，作选择，争一次结丹' })}</div><p class="fine">单人文字修行 · 自动记录在这台浏览器<br>寿元是行动资源，每次取舍的代价会先写明。</p></section>`;
+  return `<section class="intro view"><div class="journey"><span>山野行笺</span><span class="journey-line" aria-hidden="true"></span><span>一名筑基散修的余途</span></div><h1 tabindex="-1">此劫，<br>还能渡过去吗。</h1><p class="intro-lead">你修到筑基，已经老了。<br>离金丹还差一程，离寿尽也只剩一程。</p><p>山外总有人愿意帮忙。有的要你守一夜炉，有的只把功法传给有缘人。好处都是真的，没说完的话也是。</p><div class="intro-rule"><span><b>${RULES.startCultivation}</b> 起始修为</span><span><b>${RULES.startLife}</b> 剩余寿元</span><span><b>${RULES.threshold}</b> 可引雷结丹</span></div><div class="entry-actions">${game ? button(game.phase === 'ended' ? '翻看上一世' : '继续修行', 'resume', { primary: true, detail: `${game.phase === 'ended' ? game.ending!.title : currentEvent(game).title} · 修为 ${game.cultivation} · 余寿 ${game.life}` }) : ''}${button(game || loaded.kind === 'invalid' ? '另起一世' : '启程修行', 'new', { primary: !game, detail: game ? '替换当前本地行笺，需确认' : '读线索，作选择，争一次结丹' })}</div><p class="fine">单人文字修行 · 自动记录在这台浏览器<br>寿元是行动资源，每次取舍的代价会先写明。</p></section>`;
 }
 function render(focus = false) {
   let content = home();
@@ -120,7 +128,7 @@ app.addEventListener('click', event => {
   if (!target || target.hasAttribute('disabled')) return;
   event.preventDefault();
   const id = target.dataset.action!;
-  if (id === 'help') return modal('修行须知', `<p>你是一名寿元将尽的筑基散修。修为从 40 起，达到 100 后可准备渡劫。</p><p>余寿只有 18。调查、内观、静心通常各耗 1；化解一处隐患耗 2 余寿、10 修为。每个选择都列出自己的代价。</p><p>心魔到 100，当场失控。渡劫时心魔须低于 60，还须余寿仍存、身体无隐患。静心最多降低 20 心魔。</p><p>看清线索再决定。身体异样一旦出现，就有真实来处；内观能查明，调息能补救。调查与调息保留当前机缘，刷新也不会重新掷签。</p><p>许下的看炉约定要了结，才能渡劫。退出条款在签约前可见。</p><p>关闭页面会保留当前一局。另起一世会替换旧记录。</p>`);
+  if (id === 'help') return modal('修行须知', `<p>你是一名寿元将尽的筑基散修。修为从 40 起，达到 100 后可准备渡劫。</p><p>余寿只有 ${RULES.startLife}。渡劫耗 1，渡劫后还须留 1 活命，开局真正可花的只有 ${RULES.startLife - 2}。调查、内观、静心各耗 1；化解一处隐患耗 ${RULES.remedyLife} 余寿、${RULES.remedyCultivation} 修为。</p><p>心魔到 100，当场失控。渡劫时心魔须低于 60，还须余寿仍存、身体无隐患。静心最多降低 20 心魔。</p><p>调查还要另花时间落实收益。有些调查能多拿一份，有些只让做事更安心。每次都查，可能来不及结丹；直接争机缘能省时间，也可能吃掉补救的余量。</p><p>看清线索再决定。身体异样一旦出现，就有真实来处；内观能查明，调息能补救。调查与调息保留当前机缘，刷新也不会重新掷签。</p><p>许下的看炉约定要了结，才能渡劫。退出条款在签约前可见。</p><p>关闭页面会保留当前一局。另起一世会替换旧记录。</p>`);
   if (id === 'home') { playing = false; render(true); return; }
   if (id === 'resume') { playing = true; render(true); return; }
   if (id === 'new') return newGame();

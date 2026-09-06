@@ -1,10 +1,10 @@
 import type { HazardKind } from './types.ts';
 
 export const RULES = {
-  version: 1, rulesVersion: 1, startCultivation: 40, startLife: 18,
+  version: 1, rulesVersion: 2, startCultivation: 40, startLife: 12,
   threshold: 100, heartLimit: 100, tribulationHeart: 60,
-  rewardTiers: [6, 10, 12, 22], heartTiers: [2, 5, 15, 30],
-  remedyLife: 2, remedyCultivation: 10, meditationReduction: 20,
+  rewardTiers: [6, 10, 16, 22], heartTiers: [2, 5, 10, 22],
+  remedyLife: 2, remedyCultivation: 6, meditationReduction: 20,
 } as const;
 export const SYMPTOMS: Record<HazardKind, string> = {
   丹毒: '运功时，你闻到一丝焦甜味。洗过两回衣裳，那味道还在。',

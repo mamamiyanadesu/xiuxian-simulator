@@ -1,43 +1,74 @@
+import { pathToFileURL } from 'node:url';
+import { RULES } from '../src/config.ts';
 import { createGame, transition, actionBlock, choiceBlock, choiceCost, currentEvent } from '../src/engine.ts';
 import { validGame } from '../src/storage.ts';
-import type { Action, Game } from '../src/types.ts';
+import type { Action, Game, Choice } from '../src/types.ts';
 
-export function strategy(s: Game, policy: string): Action {
+export const POLICIES = {
+  skip: '只取低风险、不调查',
+  all: '逢事必调查',
+  selective: '比较成本后调查',
+  'one-risk': '开局赌一次，其后规划',
+  greedy: '只追即时收益',
+  repair: '持续冒险并补救',
+} as const;
+export type Policy = keyof typeof POLICIES;
+
+// Policies only use visible choices/costs and symptoms. Never inspect rolls, RNG or future events.
+export function strategy(s: Game, policy: Policy): Action {
   if (s.phase === 'feedback') return { type: 'continue' };
   if (policy !== 'greedy' && s.heartDemon >= 55) return { type: 'meditate' };
-  if (policy === 'repair' && s.hazards.length) {
+  if (policy !== 'greedy' && s.hazards.length) {
     if (s.hazards.some(h => !h.diagnosed)) return { type: 'diagnose' };
-    const h = s.hazards[0];
-    if (!actionBlock(s, { type: 'remedy', kind: h.kind })) return { type: 'remedy', kind: h.kind };
+    if (!actionBlock(s, { type: 'remedy', kind: s.hazards[0].kind })) return { type: 'remedy', kind: s.hazards[0].kind };
   }
   if (!actionBlock(s, { type: 'tribulate' })) return { type: 'tribulate' };
   const e = currentEvent(s);
-  if (policy === 'clues' && e.investigation && !s.encounterState.investigated && s.life > 3) return { type: 'investigate' };
-  let choices = e.choices.filter(c => !choiceBlock(s, c));
-  if (policy === 'safe' || policy === 'clues') choices = choices.filter(c => !c.risk && c.contract !== 'accept');
-  choices.sort((a, b) => {
-    const value = (c: typeof a) => (c.gain - choiceCost(s, c).cultivation) / choiceCost(s, c).life;
-    return value(b) - value(a);
-  });
-  return { type: 'choose', id: choices[0].id };
-}
-const policies = { safe: '保守取稳', greedy: '只看最高收益', clues: '调查后选择', repair: '冒险后补救' };
-const output = [];
-for (const [policy, label] of Object.entries(policies)) {
-  const endings: Record<string, number> = {}; let life = 0, actions = 0, maxSaveBytes = 0;
-  for (let seed = 1; seed <= 1000; seed++) {
-    let s = createGame(seed);
-    for (let step = 0; s.phase !== 'ended' && step < 200; step++) {
-      const next = transition(s, strategy(s, policy));
-      if (next === s) throw new Error(`Blocked ${policy} seed ${seed}`);
-      if (!validGame(next)) throw new Error(`Invalid state ${policy} seed ${seed} ${JSON.stringify(next)}`);
-      s = next;
-    }
-    if (!s.ending) throw new Error(`Not ended ${seed}`);
-    endings[s.ending.title] = (endings[s.ending.title] ?? 0) + 1;
-    life += s.life; actions += s.history.length;
-    maxSaveBytes = Math.max(maxSaveBytes, Buffer.byteLength(JSON.stringify(s)));
+  const value = (c: Choice) => (c.gain - choiceCost(s, c).cultivation) / choiceCost(s, c).life;
+  const available = e.choices.filter(c => !choiceBlock(s, c));
+  const safe = available.filter(c => !c.risk && c.contract !== 'accept' && !c.cure).sort((a, b) => value(b) - value(a));
+  if (policy === 'all' && e.investigation && !s.encounterState.investigated) return { type: 'investigate' };
+  if (policy === 'one-risk' && e.id === 'last_batch' && !s.encounterState.investigated) return { type: 'choose', id: 'one' };
+  if (policy === 'greedy' || policy === 'repair') return { type: 'choose', id: available.sort((a, b) => value(b) - value(a))[0].id };
+  if (policy !== 'skip' && e.investigation && !s.encounterState.investigated) {
+    const afterResearch = e.choices.filter(c => c.investigated && !c.risk && !c.refund);
+    if (afterResearch.some(c => c.gain / ((c.life ?? 1) + 1) > value(safe[0]))) return { type: 'investigate' };
   }
-  output.push({ policy: label, runs: 1000, endings, averageActions: +(actions / 1000).toFixed(2), averageLifeLeft: +(life / 1000).toFixed(2), maxSaveBytes });
+  return { type: 'choose', id: safe[0].id };
 }
-console.log(JSON.stringify({ seeds: '1..1000', rulesVersion: 1, note: '脚本策略对比，不代表真实玩家胜率或阅读时长。', results: output }, null, 2));
+export function play(seed: number, policy: Policy): Game {
+  let s = createGame(seed);
+  for (let step = 0; s.phase !== 'ended' && step < 200; step++) {
+    const next = transition(s, strategy(s, policy));
+    if (next === s) throw new Error(`Blocked ${policy} seed ${seed}`);
+    if (!validGame(next)) throw new Error(`Invalid state ${policy} seed ${seed}`);
+    s = next;
+  }
+  if (!s.ending) throw new Error(`Not ended ${policy} seed ${seed}`);
+  return s;
+}
+export function comparePolicies(runs = 1000) {
+  return Object.entries(POLICIES).map(([policy, label]) => {
+    const endings: Record<string, number> = {};
+    const winningLife: number[] = [];
+    let actions = 0, maxSaveBytes = 0, investigations = 0;
+    for (let seed = 1; seed <= runs; seed++) {
+      const s = play(seed, policy as Policy);
+      endings[s.ending!.title] = (endings[s.ending!.title] ?? 0) + 1;
+      if (s.ending!.title === '成功结丹') winningLife.push(s.life);
+      actions += s.history.length;
+      investigations += s.history.filter(h => h.action === '调查线索').length;
+      maxSaveBytes = Math.max(maxSaveBytes, Buffer.byteLength(JSON.stringify(s)));
+    }
+    return { policy, label, runs, endings, averageActions: +(actions / runs).toFixed(2),
+      averageInvestigations: +(investigations / runs).toFixed(2),
+      winningLife: winningLife.length ? {
+        average: +(winningLife.reduce((a, b) => a + b, 0) / winningLife.length).toFixed(2),
+        min: Math.min(...winningLife), max: Math.max(...winningLife),
+      } : null, maxSaveBytes };
+  });
+}
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  console.log(JSON.stringify({ seeds: '1..1000', rulesVersion: RULES.rulesVersion,
+    note: '固定启发式策略，不读取隐藏结果，不代表真实玩家胜率。胜局余寿只统计成功结丹者。', results: comparePolicies() }, null, 2));
+}

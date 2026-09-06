@@ -32,11 +32,13 @@ export function createGame(seed: number): Game {
   const s: Game = {
     version: RULES.version, rulesVersion: RULES.rulesVersion, seed: normalized, rngState: normalized,
     phase: 'encounter', revision: 0, cultivation: RULES.startCultivation, life: RULES.startLife,
-    heartDemon: 0, investigations: RULES.investigationCap, safeStreak: 0,
+    heartDemon: 0, investigations: RULES.investigationCap, safeStreak: 0, impulseNext: true,
     encounterId: 'last_batch', encounterState: { investigated: false, impulseRoll: 0, rolls: {} },
     encounterCount: 0, hazards: [], flags: [], pending: null, interrupted: null, seenEvents: [], history: [], feedback: null, ending: null,
   };
-  enter(s, 'last_batch');
+  // Warm up before selecting the opening so adjacent integer seeds do not cluster by first LCG roll.
+  random(s); random(s);
+  next(s);
   return s;
 }
 export function choiceCost(s: Game, c: Choice) {
@@ -55,6 +57,8 @@ export function actionBlock(s: Game, a: Action): string | null {
   if (s.phase === 'ended') return '此世已结束';
   if (a.type === 'continue') return s.phase === 'feedback' ? null : '没有待阅读的结果';
   if (s.phase !== 'encounter') return '请先读完本次结果';
+  if (isUncontrolled(s)) return a.type === 'impulse' ? null : '心魔正替你作主，本轮无法自行行动';
+  if (a.type === 'impulse') return '本轮由你作主';
   const e = currentEvent(s);
   if (a.type === 'choose') {
     const c = e.choices.find(c => c.id === a.id);
@@ -77,7 +81,7 @@ export function actionBlock(s: Game, a: Action): string | null {
 export function lifeCost(s: Game, a: Action): number {
   if (a.type === 'continue' || a.type === 'settle') return 0;
   if (a.type === 'remedy') return RULES.remedyLife;
-  if (a.type === 'investigate' && s.heartDemon >= RULES.cloudedHeart) return 1 + choiceCost(s, impulsiveChoice(s)).life;
+  if (a.type === 'impulse') return choiceCost(s, impulsiveChoice(s)).life;
   if (a.type === 'choose') {
     const c = currentEvent(s).choices.find(c => c.id === a.id);
     return c ? choiceCost(s, c).life : 0;
@@ -87,6 +91,9 @@ export function lifeCost(s: Game, a: Action): number {
 function impulsiveChoice(s: Game): Choice {
   const choices = currentEvent(s).choices.filter(c => !choiceBlock(s, c));
   return choices[Math.floor(s.encounterState.impulseRoll * choices.length)];
+}
+export function isUncontrolled(s: Game): boolean {
+  return s.heartDemon > RULES.impulseHeart && s.impulseNext;
 }
 export function knownTribulationRisks(s: Game): string[] {
   const risks: string[] = [];
@@ -118,6 +125,8 @@ export function transition(previous: Game, a: Action, expectedRevision = previou
   if (expectedRevision !== previous.revision || actionBlock(previous, a)) return previous;
   const s: Game = structuredClone(previous);
   s.revision++;
+  const forced = a.type === 'impulse';
+  if (forced) a = { type: 'choose', id: impulsiveChoice(s).id };
   if (a.type === 'continue') {
     const advance = s.feedback!.advance;
     s.feedback = null; s.phase = 'encounter';
@@ -130,27 +139,6 @@ export function transition(previous: Game, a: Action, expectedRevision = previou
     s.interrupted = { id: s.encounterId, state: s.encounterState };
     enter(s, 'fire');
     return s;
-  }
-  if (a.type === 'investigate' && s.heartDemon >= RULES.cloudedHeart) {
-    const chosen = impulsiveChoice(s);
-    const e = currentEvent(s);
-    s.investigations--; s.safeStreak = 0; s.life = Math.max(0, s.life - 1);
-    const report = `你本想查个明白，心里却只剩“先做了再说”。心魔替你选了“${chosen.label}”。调查次数 −1，调查另耗 1 寿元；选项代价另计。`;
-    s.history.push({ event: e.id, title: e.title, action: '调查失控', result: report,
-      truth: `心魔达到 ${RULES.cloudedHeart}，调查失控；从当时合法选项中等概率选择，未获得调查依据。`,
-      delta: { cultivation: 0, life: s.life - previous.life, heart: 0 } });
-    s.feedback = { title: '调查失控', text: report, advance: false };
-    terminal(s);
-    if (s.phase === 'ended') {
-      s.history.at(-1)!.result = '你耗尽最后 1 寿元，尚未来得及执行失控选项。调查次数 −1。';
-      s.feedback.text = s.history.at(-1)!.result;
-      return s;
-    }
-    s.feedback = null;
-    const resolved = transition(s, { type: 'choose', id: chosen.id });
-    resolved.feedback!.title = '调查失控';
-    resolved.feedback!.text = `${report} ${resolved.feedback!.text}`;
-    return resolved;
   }
   const e = currentEvent(s);
   let result = '', label = '', advance = false, symptom: string | undefined;
@@ -176,7 +164,7 @@ export function transition(previous: Game, a: Action, expectedRevision = previou
     // Only substantive, uncomplicated gains count. Routine one-life fees and small heart gains do not.
     const uneventful = c.gain > cost.cultivation && cost.cultivation === 0 && cost.life === 1 && !symptom &&
       !previous.hazards.length && !previous.pending && !s.hazards.length && !s.pending && !c.cure;
-    if (!uneventful || s.heartDemon >= RULES.cloudedHeart) s.safeStreak = 0;
+    if (!uneventful || s.heartDemon > RULES.cloudedHeart) s.safeStreak = 0;
     else if (s.investigations < RULES.investigationCap) {
       s.safeStreak++;
       if (s.safeStreak >= RULES.investigationRecovery) {
@@ -213,6 +201,14 @@ export function transition(previous: Game, a: Action, expectedRevision = previou
     s.ending = reasons.length ? { title: '渡劫失败', reasons } : { title: '成功结丹', reasons: ['真气周天闭合，心神守住，余寿尚存。劫雷落下时，没有哪一处旧患再向你讨账。'] };
     result = reasons.length ? '劫雷落下，尚未处理的问题一并显现。' : '丹成。你在山路旁坐了片刻，才起身往更远处走。';
   }
+  if (a.type === 'choose') {
+    s.impulseNext = previous.heartDemon > RULES.impulseHeart ? !previous.impulseNext : true;
+    if (forced) {
+      result = `你还没决定，手已经伸了出去。心魔替你选了“${label}”。${result} 下一次机缘暂由你作主。`;
+      label += '（心魔代选）';
+    }
+  }
+  if (s.heartDemon <= RULES.impulseHeart) s.impulseNext = true;
   s.history.push({ event: e.id, title: e.title, action: label, result, truth,
     delta: { cultivation: s.cultivation - previous.cultivation, life: s.life - previous.life, heart: s.heartDemon - previous.heartDemon },
     ...(symptom ? { symptom } : {}),

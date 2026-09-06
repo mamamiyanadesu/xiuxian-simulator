@@ -20,7 +20,7 @@ export interface Game {
   version: number; rulesVersion: number; seed: number; rngState: number;
   phase: 'encounter' | 'feedback' | 'ended'; revision: number;
   cultivation: number; life: number; heartDemon: number;
-  investigations: number; safeStreak: number;
+  investigations: number; safeStreak: number; impulseNext: boolean;
   encounterId: string; encounterState: { investigated: boolean; impulseRoll: number; rolls: Record<string, number> };
   encounterCount: number; hazards: Hazard[]; flags: string[];
   interrupted: null | { id: string; state: Game['encounterState'] };
@@ -30,4 +30,4 @@ export interface Game {
   ending: null | { title: string; reasons: string[] };
 }
 export type Action = { type: 'choose'; id: string } | { type: 'remedy'; kind: HazardKind } |
-  { type: 'investigate' | 'diagnose' | 'meditate' | 'tribulate' | 'continue' | 'settle' };
+  { type: 'investigate' | 'impulse' | 'diagnose' | 'meditate' | 'tribulate' | 'continue' | 'settle' };

@@ -1,6 +1,6 @@
 import { pathToFileURL } from 'node:url';
 import { RULES } from '../src/config.ts';
-import { createGame, transition, actionBlock, choiceBlock, choiceCost, currentEvent } from '../src/engine.ts';
+import { createGame, transition, actionBlock, choiceBlock, choiceCost, currentEvent, isUncontrolled } from '../src/engine.ts';
 import { validGame } from '../src/storage.ts';
 import type { Action, Game, Choice } from '../src/types.ts';
 
@@ -17,6 +17,7 @@ export type Policy = keyof typeof POLICIES;
 // Policies only use visible choices/costs and symptoms. Never inspect rolls, RNG or future events.
 export function strategy(s: Game, policy: Policy): Action {
   if (s.phase === 'feedback') return { type: 'continue' };
+  if (isUncontrolled(s)) return { type: 'impulse' };
   if (policy !== 'greedy' && s.heartDemon >= 55) return { type: 'meditate' };
   if (policy !== 'greedy' && s.hazards.length) {
     if (s.hazards.some(h => !h.diagnosed)) return { type: 'diagnose' };
@@ -28,12 +29,14 @@ export function strategy(s: Game, policy: Policy): Action {
   const available = e.choices.filter(c => !choiceBlock(s, c));
   const safe = available.filter(c => !c.risk && c.contract !== 'accept' && !c.cure).sort((a, b) => value(b) - value(a));
   if (policy === 'all' && !actionBlock(s, { type: 'investigate' })) return { type: 'investigate' };
-  if (policy === 'one-risk' && e.id === 'last_batch' && !s.encounterState.investigated) return { type: 'choose', id: 'one' };
+  if (policy === 'one-risk' && s.encounterCount === 1 && !s.encounterState.investigated) {
+    const gamble = available.filter(c => c.risk && c.risk.chance <= .25).sort((a, b) => value(b) - value(a))[0];
+    if (gamble) return { type: 'choose', id: gamble.id };
+  }
   if (policy === 'greedy' || policy === 'repair') return { type: 'choose', id: available.sort((a, b) => value(b) - value(a))[0].id };
   if (policy !== 'skip' && !actionBlock(s, { type: 'investigate' })) {
-    if (s.heartDemon >= RULES.cloudedHeart) return { type: 'meditate' };
-    const afterResearch = e.choices.filter(c => c.investigated && !c.risk && !c.refund);
-    if (afterResearch.some(c => c.gain / ((c.life ?? 1) + 1) > value(safe[0]))) return { type: 'investigate' };
+    // Hidden options are genuinely unknown. Judge whether to spend time using visible alternatives only.
+    if (s.life >= 4 && value(safe[0]) <= 8) return { type: 'investigate' };
   }
   return { type: 'choose', id: safe[0].id };
 }

@@ -37,7 +37,7 @@ test('investigation preserves rolls, costs once, retains encounter and does not 
 });
 test('hazard is visible, diagnostic identifies source, remedy consumes exact costs', () => {
   let s = at('last_batch'); s = transition(s, { type: 'choose', id: 'all' });
-  assert.equal(s.hazards[0].kind, '丹毒'); assert.ok(s.history[0].symptom); assert.equal(s.cultivation, 62);
+  assert.equal(s.hazards[0].kind, '丹毒'); assert.ok(s.history[0].symptom); assert.equal(s.cultivation, 30);
   s = transition(s, { type: 'continue' }); const id = s.encounterId;
   s = step(s, { type: 'diagnose' }); assert.equal(s.hazards[0].diagnosed, true);
   assert.match(s.history.at(-1)!.result, /最后一炉/);
@@ -51,7 +51,7 @@ test('same hazard retains first cause and does not stack', () => {
   assert.equal(n.hazards.length, 1); assert.equal(n.hazards[0].source, 'last_batch'); assert.ok(n.hazards[0].diagnosed);
 });
 test('stale revisions and feedback phase prevent duplicate deductions and encounter skips', () => {
-  const s = createGame(4); const n = transition(s, { type: 'choose', id: 'all' }, s.revision);
+  const s = at('last_batch'); const n = transition(s, { type: 'choose', id: 'all' }, s.revision);
   assert.equal(transition(n, { type: 'choose', id: 'all' }, s.revision), n);
   assert.equal(transition(n, { type: 'choose', id: 'all' }), n);
   const next = transition(n, { type: 'continue' }, n.revision);
@@ -73,7 +73,7 @@ test('contract refund uses original received amount, negotiated exit requires ac
   assert.equal(s.cultivation, before - 11); assert.equal(s.pending, null);
 });
 test('early settlement preserves interrupted encounter rolls and research', () => {
-  let s = createGame(13); s.pending = { due: 3, gain: 22, investigated: false };
+  let s = at('last_batch'); s.cultivation = 22; s.pending = { due: 3, gain: 22, investigated: false };
   s = step(s, { type: 'investigate' }); const encounter = structuredClone(s.encounterState);
   s = transition(s, { type: 'settle' }); assert.equal(s.encounterId, 'fire');
   s = step(s, { type: 'choose', id: 'refund' });
@@ -92,8 +92,8 @@ test('all four endings are determined after full action and record its cost', ()
   assert.equal(transition(n, { type: 'meditate' }), n);
   win.heartDemon = 60; n = transition(win, { type: 'tribulate' }); assert.equal(n.ending?.title, '渡劫失败');
   win.life = 1; n = transition(win, { type: 'tribulate' }); assert.equal(n.ending?.title, '寿尽坐化');
-  const lost = at('last_batch'); lost.heartDemon = 80;
-  n = transition(lost, { type: 'choose', id: 'all' }); assert.equal(n.ending?.title, '心魔失控'); assert.equal(n.cultivation, 62); assert.equal(n.heartDemon, 100);
+  const lost = at('last_batch'); lost.heartDemon = 80; lost.impulseNext = false;
+  n = transition(lost, { type: 'choose', id: 'all' }); assert.equal(n.ending?.title, '心魔失控'); assert.equal(n.cultivation, 30); assert.equal(n.heartDemon, 100);
 });
 test('every unresolved hazard fails tribulation and cites actual source', () => {
   for (const kind of ['丹毒', '经脉暗伤', '功法缺陷'] as const) {
@@ -107,9 +107,9 @@ test('no meaningless diagnosis or meditation and no unaffordable remedy', () => 
   assert.match(actionBlock(s, { type: 'remedy', kind: '丹毒' })!, /还缺 1/);
 });
 test('event pool exhaustion uses repeatable lowest-tier quiet cultivation', () => {
-  const s = createGame(5); s.seenEvents = EVENTS.map(e => e.id);
+  const s = at('last_batch'); s.seenEvents = EVENTS.map(e => e.id);
   let n = step(s, { type: 'choose', id: 'leave' }); assert.equal(n.encounterId, 'quiet');
-  n = step(n, { type: 'choose', id: 'practice' }); assert.equal(n.encounterId, 'quiet'); assert.equal(n.cultivation, 46);
+  n = step(n, { type: 'choose', id: 'practice' }); assert.equal(n.encounterId, 'quiet'); assert.equal(n.cultivation, 8);
 });
 test('save and reload preserve feedback, pending contract and action outcome', () => {
   const s = transition(at('elder'), { type: 'choose', id: 'accept' });

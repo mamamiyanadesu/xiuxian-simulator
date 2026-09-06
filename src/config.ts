@@ -1,10 +1,10 @@
 import type { HazardKind } from './types.ts';
 
 export const RULES = {
-  version: 2, rulesVersion: 3, startCultivation: 40, startLife: 12,
-  investigationCap: 2, investigationRecovery: 3, cloudedHeart: 40,
+  version: 3, rulesVersion: 4, startCultivation: 0, startLife: 12,
+  investigationCap: 2, investigationRecovery: 3, cloudedHeart: 40, impulseHeart: 70,
   threshold: 100, heartLimit: 100, tribulationHeart: 60,
-  rewardTiers: [6, 10, 16, 22], heartTiers: [2, 5, 10, 22],
+  rewardTiers: [8, 12, 20, 30], heartTiers: [2, 5, 10, 22],
   remedyLife: 2, remedyCultivation: 6, meditationReduction: 20,
 } as const;
 export const SYMPTOMS: Record<HazardKind, string> = {

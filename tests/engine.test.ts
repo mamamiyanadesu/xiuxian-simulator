@@ -13,9 +13,9 @@ function at(id: string, rolls = .01): Game {
 }
 function step(s: Game, action: Action) { const n = transition(s, action); return n.phase === 'feedback' ? transition(n, { type: 'continue' }) : n; }
 
-test('12 authored nodes, meaningful investigation and four-tier choice data', () => {
-  assert.equal(EVENTS.length, 12);
-  assert.equal(new Set(EVENTS.map(e => e.id)).size, 12);
+test('15 authored nodes, meaningful investigation and four-tier choice data', () => {
+  assert.equal(EVENTS.length, 15);
+  assert.equal(new Set(EVENTS.map(e => e.id)).size, 15);
   EVENTS.forEach(e => {
     assert.ok(e.truth && e.paragraphs.length && e.clues.length);
     e.choices.filter(c => c.investigated).forEach(() => assert.ok(e.investigation || e.followup));

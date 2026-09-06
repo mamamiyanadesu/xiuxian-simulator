@@ -1,0 +1,320 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>此劫难渡 · 四种界面方向</title>
+<style>
+*{box-sizing:border-box}html{background:#eeefeb;color:#282c29}body{margin:0;font:400 15px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #737d68;outline-offset:4px}main{max-width:1480px;margin:auto;padding:34px 32px 44px}.intro{display:flex;justify-content:space-between;gap:30px;align-items:end;margin-bottom:24px}.intro h1{font-size:28px;font-weight:600;margin:0 0 6px;letter-spacing:.04em}.intro p{margin:0;color:#5b625d;font-size:14px}.intro .project-mark{font:400 13px/1.5 Georgia,serif;letter-spacing:.13em;color:#737970;white-space:nowrap}.dials{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding:18px 0 24px;border-top:1px solid #d0d5ce;border-bottom:1px solid #d0d5ce;margin-bottom:26px}.dial label{display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:500}.dial output{font-variant-numeric:tabular-nums}.dial input{width:100%;accent-color:#4c5948;margin:12px 0 0;min-height:24px}.dial small{font-size:12px;color:#666f66}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;align-items:start}.direction{border:1px solid #c8cec5;border-radius:9px;background:#fafbf8;overflow:hidden;min-width:0}.direction-heading{padding:16px 20px;display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid #c8cec5}.direction-heading>div{display:flex;align-items:center;gap:12px}.direction-heading b{font:400 21px/1 Georgia,serif;color:#7a8376}.direction-heading h2{font-size:17px;font-weight:500;margin:0}.direction-heading>span{font-size:12px;color:#64705e;white-space:nowrap}.rec{color:#41513b;background:#e7eddf;padding:2px 7px;border:1px solid #c4d1b9;font-size:11px;border-radius:3px}.frame-stage{overflow:hidden}.frame-stage iframe{display:block;border:0;width:100%;height:850px;min-width:0}.selection-row{padding:16px 20px;border-top:1px solid #d0d5ce}.selection-row .qmdp-pick-button{margin:0;width:100%;min-height:46px;border:1px solid #515d4c;border-radius:5px;background:#414d3d;color:#f5f7ef;padding:10px 15px;font-weight:500}.direction.is-selected{outline:3px solid #46523f;outline-offset:2px}.details{border-top:1px solid #cbd1c6;margin-top:36px;padding-top:24px}.details h2{font-size:19px;font-weight:500;margin:0 0 14px}.details-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 36px}.details p{margin:0;font-size:14px;color:#4e594c}.details strong{color:#293226;font-weight:500}.details .detail-note{margin-top:18px;font-size:13px}.fallback-dialog{max-width:480px;width:calc(100% - 32px);border:1px solid #c7cdc3;border-radius:12px;padding:24px;color:#293226;background:#fafbf8}.fallback-dialog::backdrop{background:#16201466}.fallback-dialog h2{font-size:21px;font-weight:500;margin:0 0 12px}.fallback-dialog textarea{width:100%;min-height:90px;margin:10px 0;border:1px solid #aeb8a8;border-radius:6px;padding:10px}.dialog-actions{display:flex;justify-content:end;gap:10px}.dialog-actions button{min-height:44px;padding:8px 14px;border:1px solid #87927f;border-radius:5px;background:#f3f5ed;color:#283125}.dialog-actions button:last-child{background:#414d3d;color:#fff}.status{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);max-width:calc(100% - 32px);background:#293326;color:#fafbf8;border-radius:7px;padding:12px 18px;z-index:10}.status:empty{display:none}
+@media(max-width:900px){main{padding:24px 20px 32px}.direction-heading{padding:14px}.direction-heading>span{display:none}.grid{gap:18px}.selection-row{padding:14px}.intro .project-mark{display:none}}
+@media(max-width:720px){main{padding:22px 12px 32px}.intro{margin-bottom:18px}.intro h1{font-size:24px}.dials{grid-template-columns:1fr;gap:13px;padding:16px 5px}.dial input{margin:4px 0 0}.dial small{display:none}.grid,.details-grid{grid-template-columns:1fr}.direction-heading>span{display:block;font-size:11px}.direction-heading h2{font-size:16px}.direction-heading>div{gap:8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head><body><main>
+<header class="intro"><div><h1>此劫难渡 · 界面方向</h1><p>四种方向样机，用于选择视觉与交互气质，尚未接入正式游戏规则。</p></div><span class="project-mark">A CULTIVATOR'S LAST CHANCE</span></header>
+<section class="dials" data-qmdp-dials aria-label="设计偏好">
+<div class="dial"><label for="variance">视觉冒险度 <output data-qmdp-output="variance">7</output></label><input id="variance" data-qmdp-dial="variance" type="range" min="1" max="10" value="7"><small>从克制熟悉到鲜明大胆</small></div>
+<div class="dial"><label for="motion">动效强度 <output data-qmdp-output="motion">3</output></label><input id="motion" data-qmdp-dial="motion" type="range" min="1" max="10" value="3"><small>从安静阅读到丰富反馈</small></div>
+<div class="dial"><label for="density">信息密度 <output data-qmdp-output="density">5</output></label><input id="density" data-qmdp-dial="density" type="range" min="1" max="10" value="5"><small>从舒展留白到紧凑集中</small></div>
+</section><section class="grid" aria-label="四种设计方向"><article class="direction" data-design-option="A" data-name="旧籍朱批">
+<div class="direction-heading"><div><b>A</b><h2>旧籍朱批</h2><span class="rec">推荐</span></div><span>暖纸 · 书卷 · 朱批</span></div>
+<div class="frame-stage"><iframe title="A · 旧籍朱批游戏方向样机" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;title&gt;旧籍朱批 · 此劫难渡&lt;/title&gt;
+&lt;style&gt;
+html{background:#eee7d8}body{margin:0}.a{box-sizing:border-box;padding:26px 30px 20px;color:#302c26;background:#f4eedf;font:400 15px/1.7 -apple-system,BlinkMacSystemFont,&quot;PingFang SC&quot;,&quot;Microsoft YaHei&quot;,sans-serif}.a *{box-sizing:border-box}.a button{font:inherit;cursor:pointer}.a button:focus-visible{outline:3px solid #9a4939;outline-offset:3px}.a-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid #cfc4ac;gap:12px}.a-title{font:600 29px/1.3 &quot;Songti SC&quot;,&quot;STSong&quot;,serif;letter-spacing:.1em;margin:0}.a-seal{color:#8a382c;border:1px solid #a64c39;padding:3px 8px;font-size:12px;letter-spacing:.2em;white-space:nowrap}.a-stats{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:15px;padding:17px 0;border-bottom:1px solid #cfc4ac}.a-stat-label{font-size:12px;color:#696052}.a-stat-val{display:block;font:400 25px/1.25 Georgia,serif;font-variant-numeric:tabular-nums}.a-stat-val small{font:400 12px/1.5 -apple-system,sans-serif;color:#696052}.a-meter{height:3px;background:#d8ceba;margin-top:6px}.a-meter span{display:block;height:100%;background:#577063;width:40%}.a-story{position:relative;padding:23px 0 12px}.a-event-head{display:flex;align-items:baseline;gap:13px;margin-bottom:16px}.a-event-head h2{font:600 26px/1.35 &quot;Songti SC&quot;,&quot;STSong&quot;,serif;letter-spacing:.08em;margin:0}.a-event-head span{color:#6e6558;font-size:12px}.a-story p{margin:0 0 12px}.a-story .a-dialogue{color:#773e30;padding:0 10px}.a-clues{display:flex;flex-wrap:wrap;gap:7px;margin:3px 0 19px}.a-clue{background:#eae0cc;border:1px solid #cfc0a3;font-size:12px;padding:3px 9px;border-radius:2px;color:#514638}.a-choices{display:grid;gap:8px}.a-choice{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;background:transparent;border:1px solid #bcb09a;border-radius:2px;padding:10px 13px;color:#302c26;text-align:left}.a-choice small{font-size:12px;color:#6d6252;white-space:nowrap}.a-choice:first-child{background:#7c352b;border-color:#7c352b;color:#fff6e6}.a-choice:first-child small{color:#f1d7ca}.a-choice:last-child{border-color:transparent;min-height:40px;justify-content:center;font-size:13px;color:#736654}.a-feedback{background:#e8dfc9;padding:12px 14px;color:#593f31;font-size:14px;margin:10px 0}.a-feedback[hidden]{display:none}.a-tools{display:flex;justify-content:space-between;gap:10px;padding-top:14px;border-top:1px solid #cfc4ac;margin-top:8px}.a-tools button{border:0;background:transparent;color:#655b4c;font-size:13px;padding:5px 3px}.a-tools button:last-child{color:#8a382c}.a-note{font-size:11px;color:#776d5c;text-align:right;margin-top:7px}@media(max-width:380px){.a{padding:21px 19px 15px}.a-title{font-size:26px}.a-story{padding-top:20px}.a-choice{gap:6px;padding:10px}.a-choice small{font-size:11px}}
+@media(hover:hover) and (pointer:fine){.a-choice:hover{background:#e7dcc5}.a-choice:first-child:hover{background:#63291f}.a-tools button:hover{text-decoration:underline}}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;a&quot;&gt;
+&lt;header class=&quot;a-head&quot;&gt;&lt;h1 class=&quot;a-title&quot;&gt;此劫难渡&lt;/h1&gt;&lt;span class=&quot;a-seal&quot;&gt;散修手记&lt;/span&gt;&lt;/header&gt;
+&lt;div class=&quot;a-stats&quot; aria-label=&quot;修行状态&quot;&gt;&lt;div&gt;&lt;span class=&quot;a-stat-label&quot;&gt;修为 · 筑基&lt;/span&gt;&lt;strong class=&quot;a-stat-val&quot;&gt;40 &lt;small&gt;/ 100&lt;/small&gt;&lt;/strong&gt;&lt;div class=&quot;a-meter&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;a-stat-label&quot;&gt;剩余寿元&lt;/span&gt;&lt;strong class=&quot;a-stat-val&quot;&gt;&lt;span id=&quot;a-life&quot;&gt;18&lt;/span&gt;&lt;/strong&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;a-stat-label&quot;&gt;心魔&lt;/span&gt;&lt;strong class=&quot;a-stat-val&quot;&gt;0 &lt;small&gt;/ 100&lt;/small&gt;&lt;/strong&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;section class=&quot;a-story&quot;&gt;&lt;div class=&quot;a-event-head&quot;&gt;&lt;h2&gt;最后一炉&lt;/h2&gt;&lt;span&gt;坊市 · 丹药&lt;/span&gt;&lt;/div&gt;
+&lt;p&gt;摊主正在拆招牌。见你停下，他又把“清仓”二字扶正了。&lt;/p&gt;
+&lt;p class=&quot;a-dialogue&quot;&gt;“最后一炉养元丹。家师闭关去了，往后有灵石也买不着。”&lt;/p&gt;
+&lt;p&gt;桌上剩下三瓶，封口都很新。旁边竹篓里却有几十张揭下来的旧丹签。你认出其中一张，上个月来时就贴在这里。&lt;/p&gt;
+&lt;p&gt;你问为何换签。他捻掉瓶底一点红末。&lt;/p&gt;
+&lt;p class=&quot;a-dialogue&quot;&gt;“师父嫌从前的字不吉利，耽误药效。”&lt;/p&gt;&lt;p&gt;他愿意拿一瓶抵工钱，只需你替他温炉半日。若肯帮着把旧丹重新封好，整炉余药都归你。&lt;/p&gt;&lt;/section&gt;
+&lt;div class=&quot;a-clues&quot; aria-label=&quot;可见线索&quot;&gt;&lt;span class=&quot;a-clue&quot;&gt;新封口&lt;/span&gt;&lt;span class=&quot;a-clue&quot;&gt;旧丹签&lt;/span&gt;&lt;span class=&quot;a-clue&quot; id=&quot;a-clue&quot;&gt;瓶底红末&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;a-choices&quot;&gt;&lt;button class=&quot;a-choice&quot; id=&quot;a-investigate&quot;&gt;&lt;span&gt;先讨半粒，验一验药&lt;/span&gt;&lt;small&gt;寿元 −1&lt;/small&gt;&lt;/button&gt;&lt;button class=&quot;a-choice&quot; data-a-result=&quot;温炉换得一瓶丹药。运功时，鼻端隐约传来一丝焦甜味。&quot;&gt;&lt;span&gt;只取一瓶&lt;/span&gt;&lt;small&gt;稳妥取舍&lt;/small&gt;&lt;/button&gt;&lt;button class=&quot;a-choice&quot; data-a-result=&quot;你收下余药，修为增长得很快。瓶底的红末，也随药一同入了腹。&quot;&gt;&lt;span&gt;包下余药&lt;/span&gt;&lt;small&gt;收益高 · 风险高&lt;/small&gt;&lt;/button&gt;&lt;button class=&quot;a-choice&quot; data-a-result=&quot;你记住瓶底的丹号，转身走进坊市。&quot;&gt;&lt;span&gt;记住丹号，离开此处&lt;/span&gt;&lt;/button&gt;&lt;/div&gt;
+&lt;p class=&quot;a-feedback&quot; id=&quot;a-feedback&quot; role=&quot;status&quot; hidden&gt;&lt;/p&gt;
+&lt;footer class=&quot;a-tools&quot;&gt;&lt;button data-a-result=&quot;目前没有查明的隐患。出现身体征兆后，可用内观辨认。&quot;&gt;内观&lt;/button&gt;&lt;button data-a-result=&quot;此刻心魔为零，无需静心。&quot;&gt;静心&lt;/button&gt;&lt;button data-a-result=&quot;修为尚未圆满，暂不能渡劫。&quot;&gt;准备渡劫 ↗&lt;/button&gt;&lt;/footer&gt;&lt;div class=&quot;a-note&quot;&gt;方向样机&lt;/div&gt;
+&lt;/main&gt;&lt;script&gt;
+const af=document.getElementById(&#x27;a-feedback&#x27;);function showA(text){af.textContent=text;af.hidden=false}document.getElementById(&#x27;a-investigate&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{document.getElementById(&#x27;a-life&#x27;).textContent=&#x27;17&#x27;;document.getElementById(&#x27;a-investigate&#x27;).disabled=true;document.getElementById(&#x27;a-clue&#x27;).textContent=&#x27;查明 · 杂质未炼净&#x27;;showA(&#x27;药力虽足，杂质却未炼净。重新炼化需要时间，可以除去丹毒。&#x27;);});document.querySelectorAll(&#x27;[data-a-result]&#x27;).forEach(el=&gt;el.addEventListener(&#x27;click&#x27;,()=&gt;showA(el.dataset.aResult)));
+&lt;/script&gt;&lt;style&gt;html,body{min-height:0!important;height:auto!important}body{overflow:hidden!important}&lt;/style&gt;&lt;script&gt;
+function reportSize(){parent.postMessage({kind:&#x27;xiuxian-preview-size&#x27;,height:Math.ceil(document.body.getBoundingClientRect().height)+2},&#x27;*&#x27;)}
+new ResizeObserver(reportSize).observe(document.body);addEventListener(&#x27;load&#x27;,reportSize);reportSize();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+" sandbox="allow-scripts"></iframe></div>
+<div class="selection-row"><button class="qmdp-pick-button" type="button">选择 A · 旧籍朱批</button></div></article>
+<article class="direction" data-design-option="B" data-name="夜行灯录">
+<div class="direction-heading"><div><b>B</b><h2>夜行灯录</h2></div><span>深墨 · 暖灯 · 日志</span></div>
+<div class="frame-stage"><iframe title="B · 夜行灯录游戏方向样机" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
+&lt;title&gt;此劫难渡 · 夜行灯录&lt;/title&gt;
+&lt;style&gt;
+:root{color-scheme:dark;background:#14232b;font-family:-apple-system,BlinkMacSystemFont,&quot;PingFang SC&quot;,&quot;Microsoft YaHei&quot;,sans-serif;color:#e1e5e6;font-synthesis:none}
+.b-body{margin:0;background:#14232b}
+.b-root,.b-root *{box-sizing:border-box}
+.b-root{max-width:640px;margin:0 auto;padding:22px 26px 14px;font-size:15px;line-height:1.7}
+.b-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.b-brand{font-size:17px;font-weight:600;letter-spacing:.12em;color:#f0ece1}
+.b-person{font-size:12px;color:#bbc4c8;letter-spacing:.08em}
+.b-lantern{display:inline-block;margin-right:7px;color:#efbd72;font-size:16px}
+.b-status{display:grid;grid-template-columns:1.65fr 1fr .75fr;gap:20px;margin:20px 0 23px;padding-bottom:18px;border-bottom:1px solid #435057}
+.b-stat-label{font-size:12px;color:#b8c2c7}
+.b-number{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:25px;line-height:1.25;font-variant-numeric:tabular-nums;color:#f1eee6}
+.b-number small{font-size:13px;color:#b4c0c6;margin-left:4px}
+.b-number.b-life{color:#efbd72}
+.b-progress{height:3px;margin-top:9px;background:#425056}
+.b-progress span{display:block;width:40%;height:3px;background:#dfb679}
+.b-kicker{color:#c5af89;font-size:12px;letter-spacing:.12em;display:flex;align-items:center;gap:8px}
+.b-kicker:after{content:&quot;&quot;;width:28px;height:1px;background:#9a8460}
+.b-title{margin:6px 0 17px;font-size:28px;font-weight:500;letter-spacing:.08em;line-height:1.35;color:#f4ede0}
+.b-story{font-size:15px;line-height:1.8;color:rgba(255,255,255,.88);max-width:36em}
+.b-story p{margin:0 0 10px}
+.b-story q{quotes:none;color:#f0d6ac}
+.b-clues{display:flex;flex-wrap:wrap;gap:6px 15px;margin:16px 0 20px;font-size:12px;color:#d2b582}
+.b-clues span{white-space:nowrap}.b-clues span:before{content:&quot;◇&quot;;margin-right:6px;color:#d2b582}
+.b-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.b-root button{font:inherit;cursor:pointer;border-radius:3px;min-height:46px;transition:background-color .15s,color .15s;border:1px solid #5a6568;color:#e4e7e6;background:#1d3039;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left}
+.b-root button:hover{background:#30434b}.b-root button:focus-visible{outline:2px solid #f8d699;outline-offset:3px}
+.b-root button:active{background:#415058}
+.b-root button.b-primary{background:#e3b779;border-color:#e3b779;color:#202d30;font-weight:600}
+.b-root button.b-primary:hover{background:#f0cd98}
+.b-cost{font-size:11px;white-space:nowrap;opacity:.85;font-weight:400}
+.b-root button.b-leave{border-color:transparent;background:transparent;color:#c0c9cd}
+.b-root button.b-leave:hover{background:#243740}
+.b-footer{display:flex;align-items:center;gap:8px;margin-top:19px;padding-top:10px;border-top:1px solid #435057}
+.b-root .b-tool{border:0;min-height:44px;background:transparent;font-size:13px;padding:5px 8px;color:#c2cbce;justify-content:center}
+.b-root .b-tool:last-child{margin-left:auto;color:#899a9f;cursor:not-allowed}
+.b-feedback{margin:14px 0 0;padding:12px;background:#203842;border:1px solid #526269;font-size:14px;color:#ede9df;line-height:1.8}
+.b-feedback[hidden]{display:none}
+@media(max-width:350px){.b-root{padding:18px 18px 12px}.b-status{gap:14px;margin:16px 0 19px}.b-title{font-size:26px}.b-actions{gap:7px}.b-root button{padding:8px;font-size:14px}.b-cost{font-size:10px}.b-story{line-height:1.75}}
+@media(prefers-reduced-motion:reduce){.b-root button{transition:none}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body class=&quot;b-body&quot;&gt;
+&lt;main class=&quot;b-root&quot;&gt;
+ &lt;header class=&quot;b-head&quot;&gt;&lt;div class=&quot;b-brand&quot;&gt;此劫难渡&lt;/div&gt;&lt;div class=&quot;b-person&quot;&gt;&lt;span class=&quot;b-lantern&quot; aria-hidden=&quot;true&quot;&gt;◈&lt;/span&gt;筑基散修&lt;/div&gt;&lt;/header&gt;
+ &lt;section class=&quot;b-status&quot; aria-label=&quot;修行状态&quot;&gt;
+  &lt;div&gt;&lt;span class=&quot;b-stat-label&quot;&gt;修为&lt;/span&gt;&lt;span class=&quot;b-number&quot;&gt;40&lt;small&gt;/100&lt;/small&gt;&lt;/span&gt;&lt;div class=&quot;b-progress&quot; role=&quot;meter&quot; aria-label=&quot;修为&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot; aria-valuenow=&quot;40&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;span class=&quot;b-stat-label&quot;&gt;余寿&lt;/span&gt;&lt;span class=&quot;b-number b-life&quot; id=&quot;b-life&quot;&gt;18&lt;/span&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;span class=&quot;b-stat-label&quot;&gt;心魔&lt;/span&gt;&lt;span class=&quot;b-number&quot;&gt;0&lt;/span&gt;&lt;/div&gt;
+ &lt;/section&gt;
+ &lt;article&gt;
+  &lt;div class=&quot;b-kicker&quot;&gt;青石坊 · 灯下见闻&lt;/div&gt;
+  &lt;h1 class=&quot;b-title&quot;&gt;最后一炉&lt;/h1&gt;
+  &lt;div class=&quot;b-story&quot;&gt;
+   &lt;p&gt;摊主正在拆招牌。见你停下，他又把“清仓”二字扶正了。&lt;/p&gt;
+   &lt;p&gt;&lt;q&gt;“最后一炉养元丹。家师闭关去了，往后有灵石也买不着。”&lt;/q&gt;&lt;/p&gt;
+   &lt;p&gt;桌上剩下三瓶，封口都很新。旁边竹篓里却有几十张揭下来的旧丹签。你认出其中一张，上个月来时就贴在这里。&lt;/p&gt;
+   &lt;p&gt;你问为何换签。他捻掉瓶底一点红末。&lt;/p&gt;
+   &lt;p&gt;&lt;q&gt;“师父嫌从前的字不吉利，耽误药效。”&lt;/q&gt;&lt;/p&gt;
+   &lt;p&gt;他愿意拿一瓶抵工钱，只需你替他温炉半日。若肯帮着把旧丹重新封好，整炉余药都归你。&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;b-clues&quot; aria-label=&quot;已见线索&quot;&gt;&lt;span&gt;新封口&lt;/span&gt;&lt;span&gt;旧丹签&lt;/span&gt;&lt;span id=&quot;b-clue&quot;&gt;瓶底红末&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&quot;b-actions&quot; aria-label=&quot;作出选择&quot;&gt;
+   &lt;button class=&quot;b-primary&quot; type=&quot;button&quot; data-b-action=&quot;inspect&quot;&gt;&lt;span&gt;先验药&lt;/span&gt;&lt;span class=&quot;b-cost&quot;&gt;寿元 −1&lt;/span&gt;&lt;/button&gt;
+   &lt;button type=&quot;button&quot; data-b-action=&quot;one&quot;&gt;&lt;span&gt;只取一瓶&lt;/span&gt;&lt;span class=&quot;b-cost&quot;&gt;修为 +10&lt;/span&gt;&lt;/button&gt;
+   &lt;button type=&quot;button&quot; data-b-action=&quot;all&quot;&gt;&lt;span&gt;包下余药&lt;/span&gt;&lt;span class=&quot;b-cost&quot;&gt;修为 +22&lt;/span&gt;&lt;/button&gt;
+   &lt;button class=&quot;b-leave&quot; type=&quot;button&quot; data-b-action=&quot;leave&quot;&gt;&lt;span&gt;离开&lt;/span&gt;&lt;span aria-hidden=&quot;true&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;b-feedback&quot; id=&quot;b-feedback&quot; role=&quot;status&quot; hidden&gt;&lt;/div&gt;
+ &lt;/article&gt;
+ &lt;nav class=&quot;b-footer&quot; aria-label=&quot;修行工具&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;b-tool&quot; data-b-action=&quot;look&quot;&gt;内观&lt;/button&gt;&lt;button type=&quot;button&quot; class=&quot;b-tool&quot; data-b-action=&quot;rest&quot;&gt;静心&lt;/button&gt;&lt;button type=&quot;button&quot; class=&quot;b-tool&quot; disabled title=&quot;修为达到 100 后可准备渡劫&quot;&gt;渡劫 · 修为未足&lt;/button&gt;&lt;/nav&gt;
+&lt;/main&gt;
+&lt;script&gt;
+(()=&gt;{let inspected=false;const root=document.querySelector(&#x27;.b-root&#x27;);const feedback=document.getElementById(&#x27;b-feedback&#x27;);const messages={one:&#x27;温炉半日，便可取走一瓶。药力之外，还有些事尚未查明。&#x27;,all:&#x27;摊主立刻铺开新丹签。“道友爽快。这一炉，都是你的。”&#x27;,leave:&#x27;你再看了一眼丹号。日后若再碰见，未必认不出来。&#x27;,look:&#x27;你收敛神识。眼下经脉通畅，尚无异常征兆。&#x27;,rest:&#x27;你把目光从整炉余药上挪开。寿元有限，眼前的便宜却总像最后一次。&#x27;};root.addEventListener(&#x27;click&#x27;,event=&gt;{const button=event.target.closest(&#x27;[data-b-action]&#x27;);if(!button)return;const action=button.dataset.bAction;if(action===&#x27;inspect&#x27;){if(!inspected){inspected=true;document.getElementById(&#x27;b-life&#x27;).textContent=&#x27;17&#x27;;document.getElementById(&#x27;b-clue&#x27;).textContent=&#x27;杂质未净&#x27;;button.innerHTML=&#x27;&lt;span&gt;已验明&lt;/span&gt;&lt;span class=&quot;b-cost&quot;&gt;可重新炼化&lt;/span&gt;&#x27;;}feedback.textContent=&#x27;药力确实充沛，但杂质未炼净。直接服用可能留下丹毒，重新炼化可以避开。&#x27;;}else{feedback.textContent=messages[action];}feedback.hidden=false;});})();
+&lt;/script&gt;
+&lt;style&gt;html,body{min-height:0!important;height:auto!important}body{overflow:hidden!important}&lt;/style&gt;&lt;script&gt;
+function reportSize(){parent.postMessage({kind:&#x27;xiuxian-preview-size&#x27;,height:Math.ceil(document.body.getBoundingClientRect().height)+2},&#x27;*&#x27;)}
+new ResizeObserver(reportSize).observe(document.body);addEventListener(&#x27;load&#x27;,reportSize);reportSize();
+&lt;/script&gt;&lt;/body&gt;
+&lt;/html&gt;
+" sandbox="allow-scripts"></iframe></div>
+<div class="selection-row"><button class="qmdp-pick-button" type="button">选择 B · 夜行灯录</button></div></article>
+<article class="direction" data-design-option="C" data-name="宗门案牍">
+<div class="direction-heading"><div><b>C</b><h2>宗门案牍</h2></div><span>冷纸 · 功簿 · 印记</span></div>
+<div class="frame-stage"><iframe title="C · 宗门案牍游戏方向样机" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;此劫难渡 · 宗门案牍&lt;/title&gt;
+&lt;style&gt;
+:root { color-scheme: light; }
+html,body { margin:0; padding:0; }
+.c-game { --c-ink:#282e31; --c-paper:#eceeeb; --c-rule:#7c8380; --c-seal:#8f392a; box-sizing:border-box; min-width:280px; min-height:680px; padding:18px 22px 14px; background:var(--c-paper); color:var(--c-ink); font-family:-apple-system,BlinkMacSystemFont,&quot;PingFang SC&quot;,&quot;Hiragino Sans GB&quot;,&quot;Microsoft YaHei&quot;,sans-serif; font-size:15px; line-height:1.65; }
+.c-game * { box-sizing:border-box; }
+.c-game button { font:inherit; color:inherit; cursor:pointer; border-radius:0; }
+.c-game button:focus-visible { outline:3px solid var(--c-seal); outline-offset:3px; position:relative; z-index:2; }
+.c-top { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:12px; border-bottom:3px double var(--c-ink); }
+.c-title { margin:0; font-family:&quot;Songti SC&quot;, &quot;STSong&quot;, &quot;SimSun&quot;,serif; font-size:25px; line-height:1.15; font-weight:600; letter-spacing:.1em; }
+.c-register { margin:5px 0 0; font-size:11px; letter-spacing:.18em; color:#555e5b; }
+.c-stamp { border:2px solid var(--c-seal); outline:1px solid var(--c-seal); outline-offset:2px; color:var(--c-seal); padding:4px 8px; font-family:&quot;Songti SC&quot;, &quot;STSong&quot;,serif; font-size:15px; font-weight:600; letter-spacing:.14em; white-space:nowrap; }
+.c-person { display:flex; justify-content:space-between; margin:8px 0; font-size:12px; color:#525c58; }
+.c-stats { display:grid; grid-template-columns:1.35fr 1fr 1fr; border:1px solid var(--c-rule); }
+.c-stat { padding:6px 10px 7px; display:flex; align-items:baseline; justify-content:space-between; gap:5px; border-right:1px solid var(--c-rule); }
+.c-stat:last-child { border-right:0; }
+.c-label { font-size:12px; white-space:nowrap; }
+.c-num { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:23px; line-height:1.3; font-variant-numeric:tabular-nums; }
+.c-num small { font-size:12px; color:#545f59; }
+.c-life { color:var(--c-seal); }
+.c-eventhead { display:flex; align-items:center; justify-content:space-between; padding:17px 0 7px; gap:12px; }
+.c-eventhead h2 { font-size:22px; font-family:&quot;Songti SC&quot;, &quot;STSong&quot;, &quot;SimSun&quot;,serif; font-weight:600; margin:0; }
+.c-file { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:11px; color:#555e5b; white-space:nowrap; }
+.c-story { padding:0 0 8px; }
+.c-story p { margin:0 0 8px; font-size:15px; line-height:1.65; }
+.c-evidence { display:flex; gap:10px; padding:8px 0; border-top:1px solid var(--c-rule); border-bottom:1px solid var(--c-rule); align-items:baseline; }
+.c-evidence strong { color:var(--c-seal); font-size:12px; font-weight:600; flex-shrink:0; }
+.c-evidence span { font-size:13px; }
+.c-choices-title { display:flex; justify-content:space-between; margin:12px 0 7px; font-size:12px; }
+.c-choices-title span:last-child { color:#5b615e; font-size:11px; }
+.c-choices { border:1px solid var(--c-rule); }
+.c-action { width:100%; display:grid; grid-template-columns:29px 1fr auto; min-height:47px; align-items:center; gap:9px; padding:6px 11px; border:0; border-bottom:1px solid #b3b8b3; background:transparent; text-align:left; transition:background-color 120ms ease-out; }
+.c-action:last-child { border-bottom:0; }
+.c-action:hover { background:#e0e3dc; }
+.c-action:first-child { background:#dedfd7; }
+.c-action:first-child:hover { background:#d3d7cc; }
+.c-action.c-selected { background:#e2d3c8; }
+.c-index { font-family:&quot;Songti SC&quot;, &quot;STSong&quot;,serif; color:#6f7672; font-size:13px; }
+.c-actionname { font-size:15px; font-weight:500; }
+.c-actionmeta { text-align:right; color:#535b57; font-size:11px; line-height:1.45; }
+.c-actionmeta span { display:block; }
+.c-outcome { margin-top:9px; border:1px solid var(--c-seal); padding:9px 11px; font-size:13px; }
+.c-outcome[hidden] { display:none; }
+.c-outcome strong { color:var(--c-seal); font-weight:600; }
+.c-tools { margin-top:13px; display:grid; grid-template-columns:1fr 1fr 1.5fr; border-top:2px solid var(--c-ink); }
+.c-tools button { border:0; border-right:1px solid var(--c-rule); padding:9px 4px; min-height:44px; background:transparent; font-size:13px; }
+.c-tools button:last-child { border-right:0; color:#69716c; }
+.c-tools button:hover { background:#e0e3dc; }
+.c-footer { margin:5px 0 0; text-align:center; font-size:11px; color:#5b645e; letter-spacing:.03em; }
+@media(max-width:360px) { .c-game { padding:15px 14px 12px; } .c-title { font-size:23px; } .c-stat { padding:6px; flex-direction:column; gap:0; } .c-eventhead { padding-top:14px; } .c-evidence { gap:7px; } .c-evidence span { font-size:12px; } .c-action { gap:5px; padding:7px 8px; grid-template-columns:22px 1fr auto; } }
+@media(prefers-reduced-motion:reduce) { .c-game * { transition:none !important; } }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;c-game&quot;&gt;
+  &lt;header class=&quot;c-top&quot;&gt;&lt;div&gt;&lt;h1 class=&quot;c-title&quot;&gt;此劫难渡&lt;/h1&gt;&lt;p class=&quot;c-register&quot;&gt;散修司 · 修行功过簿&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;c-stamp&quot;&gt;尚在人间&lt;/div&gt;&lt;/header&gt;
+  &lt;div class=&quot;c-person&quot;&gt;&lt;span&gt;籍贯不详 · 筑基散修&lt;/span&gt;&lt;span&gt;初次入册&lt;/span&gt;&lt;/div&gt;
+  &lt;section class=&quot;c-stats&quot; aria-label=&quot;修行状态&quot;&gt;
+    &lt;div class=&quot;c-stat&quot;&gt;&lt;span class=&quot;c-label&quot;&gt;修为&lt;/span&gt;&lt;span class=&quot;c-num&quot;&gt;40&lt;small&gt; /100&lt;/small&gt;&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;c-stat&quot;&gt;&lt;span class=&quot;c-label&quot;&gt;余寿&lt;/span&gt;&lt;span class=&quot;c-num c-life&quot;&gt;18&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;c-stat&quot;&gt;&lt;span class=&quot;c-label&quot;&gt;心魔&lt;/span&gt;&lt;span class=&quot;c-num&quot;&gt;0&lt;/span&gt;&lt;/div&gt;
+  &lt;/section&gt;
+  &lt;article aria-labelledby=&quot;c-event-title&quot;&gt;
+    &lt;div class=&quot;c-eventhead&quot;&gt;&lt;h2 id=&quot;c-event-title&quot;&gt;最后一炉&lt;/h2&gt;&lt;span class=&quot;c-file&quot;&gt;坊市 · 丹药&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;c-story&quot;&gt;
+      &lt;p&gt;摊主正在拆招牌。见你停下，他又把“清仓”二字扶正了。“最后一炉养元丹。家师闭关去了，往后有灵石也买不着。”&lt;/p&gt;
+      &lt;p&gt;桌上剩下三瓶，封口都很新。旁边竹篓里却有几十张揭下来的旧丹签。你认出其中一张，上个月来时就贴在这里。&lt;/p&gt;
+      &lt;p&gt;你问为何换签。他捻掉瓶底一点红末。“师父嫌从前的字不吉利，耽误药效。”&lt;/p&gt;
+      &lt;p&gt;他愿意拿一瓶抵工钱，只需你替他温炉半日。若肯帮着把旧丹重新封好，整炉余药都归你。&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;c-evidence&quot;&gt;&lt;strong&gt;所见存证&lt;/strong&gt;&lt;span&gt;新封口 ／ 旧丹签 ／ 瓶底红末&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;c-choices-title&quot;&gt;&lt;span&gt;请择一项，后果入簿&lt;/span&gt;&lt;span&gt;口头保证，不作凭据&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;c-choices&quot; aria-label=&quot;选择行动&quot;&gt;
+      &lt;button class=&quot;c-action&quot; data-c-action=&quot;inspect&quot;&gt;&lt;span class=&quot;c-index&quot;&gt;甲&lt;/span&gt;&lt;span class=&quot;c-actionname&quot;&gt;先验药&lt;/span&gt;&lt;span class=&quot;c-actionmeta&quot;&gt;&lt;span&gt;取半粒辨药性&lt;/span&gt;&lt;span&gt;余寿 −1&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;button class=&quot;c-action&quot; data-c-action=&quot;bottle&quot;&gt;&lt;span class=&quot;c-index&quot;&gt;乙&lt;/span&gt;&lt;span class=&quot;c-actionname&quot;&gt;只取一瓶&lt;/span&gt;&lt;span class=&quot;c-actionmeta&quot;&gt;&lt;span&gt;温炉换丹&lt;/span&gt;&lt;span&gt;修为 +10 · 余寿 −1&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;button class=&quot;c-action&quot; data-c-action=&quot;all&quot;&gt;&lt;span class=&quot;c-index&quot;&gt;丙&lt;/span&gt;&lt;span class=&quot;c-actionname&quot;&gt;包下余药&lt;/span&gt;&lt;span class=&quot;c-actionmeta&quot;&gt;&lt;span&gt;封好旧丹&lt;/span&gt;&lt;span&gt;修为 +22 · 余寿 −1&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;button class=&quot;c-action&quot; data-c-action=&quot;leave&quot;&gt;&lt;span class=&quot;c-index&quot;&gt;丁&lt;/span&gt;&lt;span class=&quot;c-actionname&quot;&gt;离开&lt;/span&gt;&lt;span class=&quot;c-actionmeta&quot;&gt;&lt;span&gt;记住丹号&lt;/span&gt;&lt;span&gt;余寿 −1&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;div class=&quot;c-outcome&quot; role=&quot;status&quot; aria-live=&quot;polite&quot; hidden&gt;&lt;/div&gt;
+  &lt;nav class=&quot;c-tools&quot; aria-label=&quot;修行操作&quot;&gt;&lt;button data-c-action=&quot;body&quot;&gt;内观&lt;/button&gt;&lt;button data-c-action=&quot;calm&quot;&gt;静心&lt;/button&gt;&lt;button data-c-action=&quot;trial&quot;&gt;渡劫 · 修为不足&lt;/button&gt;&lt;/nav&gt;
+  &lt;p class=&quot;c-footer&quot;&gt;功过自记，天道不受理口头申诉。&lt;/p&gt;
+&lt;/main&gt;
+&lt;script&gt;
+(() =&gt; {
+ const cRoot = document.querySelector(&#x27;.c-game&#x27;);
+ const cOutput = cRoot.querySelector(&#x27;.c-outcome&#x27;);
+ const cFeedback = {
+  inspect:&#x27;&lt;strong&gt;验药记录&lt;/strong&gt;　药力尚足，红末却是未炼净的杂质。可重新炼化，但会损失部分药力。&#x27;,
+  bottle:&#x27;&lt;strong&gt;行动预览&lt;/strong&gt;　温炉换一瓶丹，获得修为，也可能留下丹毒。正式游戏将结算心魔与已知成本。&#x27;,
+  all:&#x27;&lt;strong&gt;行动预览&lt;/strong&gt;　封好旧丹，取得余药。大量服用会提高丹毒风险，并增加心魔。&#x27;,
+  leave:&#x27;&lt;strong&gt;行动预览&lt;/strong&gt;　记下这批丹号。今后再遇到相同丹药，你能认出来。&#x27;,
+  body:&#x27;&lt;strong&gt;内观&lt;/strong&gt;　此刻未见身体征兆。正式游戏可借此查明已发生的隐患。&#x27;,
+  calm:&#x27;&lt;strong&gt;静心&lt;/strong&gt;　当前心魔为零，暂时无须静心。&#x27;,
+  trial:&#x27;&lt;strong&gt;渡劫条件&lt;/strong&gt;　修为达到 100，方可准备渡劫。当前修为为 40。&#x27;
+ };
+ cRoot.addEventListener(&#x27;click&#x27;, cEvent =&gt; {
+  const cButton = cEvent.target.closest(&#x27;[data-c-action]&#x27;);
+  if (!cButton) return;
+  cRoot.querySelectorAll(&#x27;.c-selected&#x27;).forEach(cElement =&gt; cElement.classList.remove(&#x27;c-selected&#x27;));
+  cButton.classList.add(&#x27;c-selected&#x27;);
+  cOutput.innerHTML = cFeedback[cButton.dataset.cAction] + &#x27;&lt;br&gt;&lt;span&gt;样机演示，不扣除数值。&lt;/span&gt;&#x27;;
+  cOutput.hidden = false;
+ });
+})();
+&lt;/script&gt;
+&lt;style&gt;html,body{min-height:0!important;height:auto!important}body{overflow:hidden!important}&lt;/style&gt;&lt;script&gt;
+function reportSize(){parent.postMessage({kind:&#x27;xiuxian-preview-size&#x27;,height:Math.ceil(document.body.getBoundingClientRect().height)+2},&#x27;*&#x27;)}
+new ResizeObserver(reportSize).observe(document.body);addEventListener(&#x27;load&#x27;,reportSize);reportSize();
+&lt;/script&gt;&lt;/body&gt;
+&lt;/html&gt;
+" sandbox="allow-scripts"></iframe></div>
+<div class="selection-row"><button class="qmdp-pick-button" type="button">选择 C · 宗门案牍</button></div></article>
+<article class="direction" data-design-option="D" data-name="山野行笺">
+<div class="direction-heading"><div><b>D</b><h2>山野行笺</h2></div><span>灰绿 · 山野 · 行记</span></div>
+<div class="frame-stage"><iframe title="D · 山野行笺游戏方向样机" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
+&lt;title&gt;此劫难渡 · 山野行笺&lt;/title&gt;
+&lt;style&gt;
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#eef1e9;color:#283d32;font-family:-apple-system,BlinkMacSystemFont,&quot;PingFang SC&quot;,&quot;Hiragino Sans GB&quot;,&quot;Microsoft YaHei&quot;,sans-serif}.d-root{max-width:640px;margin:auto;padding:24px 27px 18px;min-height:690px}.d-top{display:flex;justify-content:space-between;align-items:center;gap:12px}.d-brand{font-size:17px;letter-spacing:.1em;font-weight:600}.d-identity{font-size:12px;color:#627267;white-space:nowrap}.d-route{margin:13px 0 16px;display:flex;gap:5px;align-items:center;color:#69786b;font-size:11px;letter-spacing:.04em}.d-route span{height:1px;max-width:40px;background:#a6b4a6;flex:1}.d-route b{width:5px;height:5px;background:#526f56;border-radius:50%;font-weight:400}.d-metrics{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:21px;padding-bottom:20px;border-bottom:1px solid #c8d2c4}.d-label{font-size:12px;color:#5d6f60}.d-value{font-family:Georgia,serif;font-size:27px;line-height:1.35;font-variant-numeric:tabular-nums}.d-value small{font-family:inherit;font-size:14px;color:#75806f}.d-track{height:3px;background:#d5ddd0;margin-top:6px;overflow:hidden}.d-track i{display:block;height:100%;background:#4a704e;font-style:normal}.d-track.life i{background:#8d9163}.d-eventhead{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:20px 0 12px}.d-eventhead p{font-size:11px;color:#667662;margin:0 0 6px;letter-spacing:.15em}.d-eventhead h1{font-size:27px;line-height:1.2;margin:0;font-weight:500;letter-spacing:.09em}.d-location{font-size:12px;color:#697665;text-align:right;line-height:1.8;white-space:nowrap}.d-location span{display:block;color:#465e46;font-size:14px}.d-story{font-size:15px;line-height:1.76;color:#334536;max-width:36em}.d-story p{margin:0 0 10px}.d-clues{margin:15px 0 17px;display:flex;flex-wrap:wrap;align-items:center;gap:7px;font-size:11px;color:#5b6d58}.d-clues-label{margin-right:3px}.d-clue{border:1px solid #c5d1bd;border-radius:20px;padding:4px 9px;background:#f4f6ee;color:#4c6447;font:inherit;min-height:29px;cursor:pointer}.d-clue:hover{background:#e2e9d8}.d-cluenote{font-size:13px;color:#42553e;line-height:1.7;margin:-5px 0 15px;background:#e0e7d7;border-radius:3px;padding:10px 12px}.d-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.d-action{min-height:66px;border:1px solid #b6c3ae;border-radius:5px;text-align:left;background:#f8f9f2;color:#324931;padding:11px 12px;cursor:pointer;font:inherit}.d-action strong{display:flex;justify-content:space-between;gap:5px;font-weight:500;font-size:15px}.d-action small{display:block;font-size:11px;line-height:1.5;margin-top:5px;color:#68775f}.d-action:first-child{background:#3c603f;border-color:#3c603f;color:#fffdf2}.d-action:first-child small{color:#e0e8d8}.d-action:hover{border-color:#4b7042;box-shadow:0 0 0 1px #4b7042}.d-action:active{transform:translateY(1px)}.d-arrow{font-size:15px;font-family:Arial,sans-serif;font-weight:400}.d-tools{margin:18px 0 0;padding-top:13px;border-top:1px solid #c8d2c4;display:flex;align-items:center;gap:6px}.d-tools button{background:transparent;border:0;color:#4a6245;font:inherit;font-size:13px;padding:8px 10px;min-height:38px;cursor:pointer;border-radius:3px}.d-tools button:hover{background:#e0e7d7}.d-tools .d-tribulation{margin-left:auto;color:#64715c;border:1px solid #bcc8b3;font-size:12px;padding:8px 12px}.d-tools .d-tribulation:disabled{cursor:default;color:#78816e;background:#e6eadf}.d-note{font-size:11px;line-height:1.7;color:#63705e;margin:10px 0 0}button:focus-visible{outline:2px solid #254d2f;outline-offset:3px}@media(max-width:350px){.d-root{padding:20px 17px 16px}.d-metrics{gap:14px}.d-action{padding:10px}.d-identity{font-size:11px}.d-eventhead h1{font-size:26px}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;d-root&quot;&gt;
+ &lt;header class=&quot;d-top&quot;&gt;&lt;div class=&quot;d-brand&quot;&gt;此劫难渡&lt;/div&gt;&lt;div class=&quot;d-identity&quot;&gt;筑基散修 · 独自行路&lt;/div&gt;&lt;/header&gt;
+ &lt;div class=&quot;d-route&quot; aria-label=&quot;当前行程：青岚坊&quot;&gt;&lt;b&gt;&lt;/b&gt;山门之外&lt;span&gt;&lt;/span&gt;&lt;b&gt;&lt;/b&gt;青岚坊&lt;span&gt;&lt;/span&gt;金丹未至&lt;/div&gt;
+ &lt;section class=&quot;d-metrics&quot; aria-label=&quot;修行状态&quot;&gt;
+  &lt;div&gt;&lt;div class=&quot;d-label&quot;&gt;修为&lt;/div&gt;&lt;div class=&quot;d-value&quot;&gt;40&lt;small&gt; / 100&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;d-track&quot;&gt;&lt;i style=&quot;width:40%&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;div class=&quot;d-label&quot;&gt;余寿&lt;/div&gt;&lt;div class=&quot;d-value&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;d-track life&quot;&gt;&lt;i style=&quot;width:100%&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;div class=&quot;d-label&quot;&gt;心魔&lt;/div&gt;&lt;div class=&quot;d-value&quot;&gt;0&lt;/div&gt;&lt;div class=&quot;d-track&quot;&gt;&lt;i style=&quot;width:0%&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;
+ &lt;section aria-labelledby=&quot;d-title&quot;&gt;
+  &lt;div class=&quot;d-eventhead&quot;&gt;&lt;div&gt;&lt;p&gt;坊市偶遇 · 丹药&lt;/p&gt;&lt;h1 id=&quot;d-title&quot;&gt;最后一炉&lt;/h1&gt;&lt;/div&gt;&lt;div class=&quot;d-location&quot;&gt;山路第三站&lt;span&gt;日暮收摊时&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div class=&quot;d-story&quot;&gt;
+   &lt;p&gt;摊主正在拆招牌。见你停下，他又把“清仓”二字扶正了。&lt;/p&gt;
+   &lt;p&gt;“最后一炉养元丹。家师闭关去了，往后有灵石也买不着。”&lt;/p&gt;
+   &lt;p&gt;桌上剩下三瓶，封口都很新。旁边竹篓里却有几十张揭下来的旧丹签。你认出其中一张，上个月来时就贴在这里。&lt;/p&gt;
+   &lt;p&gt;你问为何换签。他捻掉瓶底一点红末。“师父嫌从前的字不吉利，耽误药效。”&lt;/p&gt;
+   &lt;p&gt;他愿意拿一瓶抵工钱，只需你替他温炉半日。若肯帮着把旧丹重新封好，整炉余药都归你。&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;d-clues&quot;&gt;&lt;span class=&quot;d-clues-label&quot;&gt;留意到&lt;/span&gt;&lt;button class=&quot;d-clue&quot; type=&quot;button&quot; aria-controls=&quot;d-cluenote&quot; aria-expanded=&quot;false&quot;&gt;新封口&lt;/button&gt;&lt;button class=&quot;d-clue&quot; type=&quot;button&quot; aria-controls=&quot;d-cluenote&quot; aria-expanded=&quot;false&quot;&gt;旧丹签&lt;/button&gt;&lt;button class=&quot;d-clue&quot; type=&quot;button&quot; aria-controls=&quot;d-cluenote&quot; aria-expanded=&quot;false&quot;&gt;瓶底红末&lt;/button&gt;&lt;/div&gt;
+  &lt;p id=&quot;d-cluenote&quot; class=&quot;d-cluenote&quot; hidden&gt;&lt;/p&gt;
+  &lt;div class=&quot;d-actions&quot; aria-label=&quot;决定下一步&quot;&gt;
+   &lt;button class=&quot;d-action&quot; type=&quot;button&quot;&gt;&lt;strong&gt;先验药&lt;span class=&quot;d-arrow&quot;&gt;↗&lt;/span&gt;&lt;/strong&gt;&lt;small&gt;余寿 −1 · 查明一条线索&lt;/small&gt;&lt;/button&gt;
+   &lt;button class=&quot;d-action&quot; type=&quot;button&quot;&gt;&lt;strong&gt;只取一瓶&lt;span class=&quot;d-arrow&quot;&gt;→&lt;/span&gt;&lt;/strong&gt;&lt;small&gt;温炉半日 · 收益适中&lt;/small&gt;&lt;/button&gt;
+   &lt;button class=&quot;d-action&quot; type=&quot;button&quot;&gt;&lt;strong&gt;包下余药&lt;span class=&quot;d-arrow&quot;&gt;→&lt;/span&gt;&lt;/strong&gt;&lt;small&gt;修为大增 · 风险较高&lt;/small&gt;&lt;/button&gt;
+   &lt;button class=&quot;d-action&quot; type=&quot;button&quot;&gt;&lt;strong&gt;离开&lt;span class=&quot;d-arrow&quot;&gt;→&lt;/span&gt;&lt;/strong&gt;&lt;small&gt;记住丹号 · 另寻机缘&lt;/small&gt;&lt;/button&gt;
+  &lt;/div&gt;
+ &lt;/section&gt;
+ &lt;nav class=&quot;d-tools&quot; aria-label=&quot;修行操作&quot;&gt;&lt;button type=&quot;button&quot;&gt;◌ 内观&lt;/button&gt;&lt;button type=&quot;button&quot;&gt;静心&lt;/button&gt;&lt;button type=&quot;button&quot; class=&quot;d-tribulation&quot; disabled&gt;渡劫 · 尚缺修为&lt;/button&gt;&lt;/nav&gt;
+ &lt;p class=&quot;d-note&quot; id=&quot;d-feedback&quot; role=&quot;status&quot; aria-live=&quot;polite&quot; hidden&gt;&lt;/p&gt;
+&lt;/main&gt;
+&lt;script&gt;
+(()=&gt;{const notes={&#x27;新封口&#x27;:&#x27;三只瓶子的封口都很新。你还不知道，封口里面的药是哪一炉。&#x27;,&#x27;旧丹签&#x27;:&#x27;竹篓里有几十张旧签，其中一张上个月还贴在这个摊位。&#x27;,&#x27;瓶底红末&#x27;:&#x27;摊主捻去了瓶底的红末。单凭颜色，还判断不了它是什么。&#x27;};const note=document.getElementById(&#x27;d-cluenote&#x27;);document.querySelectorAll(&#x27;.d-clue&#x27;).forEach(button=&gt;button.addEventListener(&#x27;click&#x27;,()=&gt;{const wasOpen=button.getAttribute(&#x27;aria-expanded&#x27;)===&#x27;true&#x27;;document.querySelectorAll(&#x27;.d-clue&#x27;).forEach(b=&gt;b.setAttribute(&#x27;aria-expanded&#x27;,&#x27;false&#x27;));note.hidden=wasOpen;if(!wasOpen){button.setAttribute(&#x27;aria-expanded&#x27;,&#x27;true&#x27;);note.textContent=notes[button.textContent]}}));document.querySelectorAll(&#x27;.d-action,.d-tools button:not(:disabled)&#x27;).forEach(button=&gt;button.addEventListener(&#x27;click&#x27;,()=&gt;{const feedback=document.getElementById(&#x27;d-feedback&#x27;);feedback.hidden=false;feedback.textContent=&#x27;这是界面预览。此处仅展示操作反馈，尚未开始本局结算。&#x27;}));})();
+&lt;/script&gt;
+&lt;style&gt;html,body{min-height:0!important;height:auto!important}body{overflow:hidden!important}&lt;/style&gt;&lt;script&gt;
+function reportSize(){parent.postMessage({kind:&#x27;xiuxian-preview-size&#x27;,height:Math.ceil(document.body.getBoundingClientRect().height)+2},&#x27;*&#x27;)}
+new ResizeObserver(reportSize).observe(document.body);addEventListener(&#x27;load&#x27;,reportSize);reportSize();
+&lt;/script&gt;&lt;/body&gt;
+&lt;/html&gt;
+" sandbox="allow-scripts"></iframe></div>
+<div class="selection-row"><button class="qmdp-pick-button" type="button">选择 D · 山野行笺</button></div></article></section>
+<section class="details"><h2>方向说明</h2><div class="details-grid">
+<p><strong>A · 旧籍朱批，推荐。</strong>暖纸、朱批和书卷标题，让文字与线索成为主角。系统正文配本地宋体标题；适合目前的仙侠故事与冷幽默。</p>
+<p><strong>B · 夜行灯录。</strong>深墨与暖琥珀，像夜里翻开的冒险日志。无衬线配等宽数字，阅读空间更舒展，困境感更强。</p>
+<p><strong>C · 宗门案牍。</strong>冷纸、墨线、印记和分项选项，像一页功过账簿。突出规矩与利益，信息密度较高。</p>
+<p><strong>D · 山野行笺。</strong>灰绿与米白，开放阅读区配双列行动，像沿途写下的手记。数字使用本地展示字体，整体更轻松清爽。</p>
+</div><p class="detail-note">拨盘用于记录正式实现偏好。也可以在确认时写混搭建议，例如保留 A 的配色，采用 B 的阅读布局。</p></section>
+</main><dialog id="fallback-dialog" class="fallback-dialog"><h2 id="fallback-title">确认设计方向</h2><p id="fallback-meta"></p><label for="advice">调整建议（可选）</label><textarea id="advice"></textarea><div class="dialog-actions"><button id="fallback-cancel">取消</button><button id="fallback-confirm">确认并复制</button></div></dialog><div id="fallback-status" class="status" role="status"></div>
+<script>
+const frames=[...document.querySelectorAll('iframe')];addEventListener('message',e=>{if(e.data?.kind!=='xiuxian-preview-size')return;const f=frames.find(x=>x.contentWindow===e.source);if(f&&Number.isFinite(e.data.height))f.style.height=Math.max(300,Math.min(2200,e.data.height))+'px'});
+document.querySelectorAll('[data-qmdp-dial]').forEach(input=>input.addEventListener('input',()=>{document.querySelectorAll('[data-qmdp-output="'+input.dataset.qmdpDial+'"]').forEach(out=>out.textContent=input.value)}));
+if(location.protocol==='file:'){
+ const cards=[...document.querySelectorAll('[data-design-option]')],dialog=document.getElementById('fallback-dialog');let pending;
+ function pick(card){pending=card;document.getElementById('fallback-title').textContent='选择 '+card.dataset.designOption+' · '+card.dataset.name;document.getElementById('fallback-meta').textContent='视觉冒险度 '+document.getElementById('variance').value+' / 动效强度 '+document.getElementById('motion').value+' / 信息密度 '+document.getElementById('density').value;dialog.showModal()}
+ cards.forEach(c=>c.querySelector('button').addEventListener('click',()=>pick(c)));
+ addEventListener('keydown',e=>{if(dialog.open||e.target.matches('input,textarea'))return;let n='1234'.indexOf(e.key);if(n>=0)pick(cards[n])});
+ document.getElementById('fallback-cancel').onclick=()=>dialog.close();document.getElementById('fallback-confirm').onclick=async()=>{let text='选 '+pending.dataset.designOption+'：'+pending.dataset.name+'；'+document.getElementById('fallback-meta').textContent+'；建议：'+document.getElementById('advice').value;try{await navigator.clipboard.writeText(text)}catch{}cards.forEach(c=>c.classList.toggle('is-selected',c===pending));dialog.close();document.getElementById('fallback-status').textContent='静态预览不会自动回传，请在对话中发送：'+text};
+}
+</script></body></html>

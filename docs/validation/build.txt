@@ -1,0 +1,14 @@
+
+> xiuxian-simulator@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v8.2.2 building client environment for production...
+transforming...
+✓ 9 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.04 kB │ gzip:  0.74 kB
+dist/assets/index-Brawx0tQ.css   8.77 kB │ gzip:  2.87 kB
+dist/assets/index-1W0mTH9R.js   47.80 kB │ gzip: 20.86 kB
+
+✓ built in 112ms

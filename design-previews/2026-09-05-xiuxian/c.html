@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>此劫难渡 · 宗门案牍</title>
+<style>
+:root { color-scheme: light; }
+html,body { margin:0; padding:0; }
+.c-game { --c-ink:#282e31; --c-paper:#eceeeb; --c-rule:#7c8380; --c-seal:#8f392a; box-sizing:border-box; min-width:280px; min-height:680px; padding:18px 22px 14px; background:var(--c-paper); color:var(--c-ink); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; font-size:15px; line-height:1.65; }
+.c-game * { box-sizing:border-box; }
+.c-game button { font:inherit; color:inherit; cursor:pointer; border-radius:0; }
+.c-game button:focus-visible { outline:3px solid var(--c-seal); outline-offset:3px; position:relative; z-index:2; }
+.c-top { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:12px; border-bottom:3px double var(--c-ink); }
+.c-title { margin:0; font-family:"Songti SC", "STSong", "SimSun",serif; font-size:25px; line-height:1.15; font-weight:600; letter-spacing:.1em; }
+.c-register { margin:5px 0 0; font-size:11px; letter-spacing:.18em; color:#555e5b; }
+.c-stamp { border:2px solid var(--c-seal); outline:1px solid var(--c-seal); outline-offset:2px; color:var(--c-seal); padding:4px 8px; font-family:"Songti SC", "STSong",serif; font-size:15px; font-weight:600; letter-spacing:.14em; white-space:nowrap; }
+.c-person { display:flex; justify-content:space-between; margin:8px 0; font-size:12px; color:#525c58; }
+.c-stats { display:grid; grid-template-columns:1.35fr 1fr 1fr; border:1px solid var(--c-rule); }
+.c-stat { padding:6px 10px 7px; display:flex; align-items:baseline; justify-content:space-between; gap:5px; border-right:1px solid var(--c-rule); }
+.c-stat:last-child { border-right:0; }
+.c-label { font-size:12px; white-space:nowrap; }
+.c-num { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:23px; line-height:1.3; font-variant-numeric:tabular-nums; }
+.c-num small { font-size:12px; color:#545f59; }
+.c-life { color:var(--c-seal); }
+.c-eventhead { display:flex; align-items:center; justify-content:space-between; padding:17px 0 7px; gap:12px; }
+.c-eventhead h2 { font-size:22px; font-family:"Songti SC", "STSong", "SimSun",serif; font-weight:600; margin:0; }
+.c-file { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:11px; color:#555e5b; white-space:nowrap; }
+.c-story { padding:0 0 8px; }
+.c-story p { margin:0 0 8px; font-size:15px; line-height:1.65; }
+.c-evidence { display:flex; gap:10px; padding:8px 0; border-top:1px solid var(--c-rule); border-bottom:1px solid var(--c-rule); align-items:baseline; }
+.c-evidence strong { color:var(--c-seal); font-size:12px; font-weight:600; flex-shrink:0; }
+.c-evidence span { font-size:13px; }
+.c-choices-title { display:flex; justify-content:space-between; margin:12px 0 7px; font-size:12px; }
+.c-choices-title span:last-child { color:#5b615e; font-size:11px; }
+.c-choices { border:1px solid var(--c-rule); }
+.c-action { width:100%; display:grid; grid-template-columns:29px 1fr auto; min-height:47px; align-items:center; gap:9px; padding:6px 11px; border:0; border-bottom:1px solid #b3b8b3; background:transparent; text-align:left; transition:background-color 120ms ease-out; }
+.c-action:last-child { border-bottom:0; }
+.c-action:hover { background:#e0e3dc; }
+.c-action:first-child { background:#dedfd7; }
+.c-action:first-child:hover { background:#d3d7cc; }
+.c-action.c-selected { background:#e2d3c8; }
+.c-index { font-family:"Songti SC", "STSong",serif; color:#6f7672; font-size:13px; }
+.c-actionname { font-size:15px; font-weight:500; }
+.c-actionmeta { text-align:right; color:#535b57; font-size:11px; line-height:1.45; }
+.c-actionmeta span { display:block; }
+.c-outcome { margin-top:9px; border:1px solid var(--c-seal); padding:9px 11px; font-size:13px; }
+.c-outcome[hidden] { display:none; }
+.c-outcome strong { color:var(--c-seal); font-weight:600; }
+.c-tools { margin-top:13px; display:grid; grid-template-columns:1fr 1fr 1.5fr; border-top:2px solid var(--c-ink); }
+.c-tools button { border:0; border-right:1px solid var(--c-rule); padding:9px 4px; min-height:44px; background:transparent; font-size:13px; }
+.c-tools button:last-child { border-right:0; color:#69716c; }
+.c-tools button:hover { background:#e0e3dc; }
+.c-footer { margin:5px 0 0; text-align:center; font-size:11px; color:#5b645e; letter-spacing:.03em; }
+@media(max-width:360px) { .c-game { padding:15px 14px 12px; } .c-title { font-size:23px; } .c-stat { padding:6px; flex-direction:column; gap:0; } .c-eventhead { padding-top:14px; } .c-evidence { gap:7px; } .c-evidence span { font-size:12px; } .c-action { gap:5px; padding:7px 8px; grid-template-columns:22px 1fr auto; } }
+@media(prefers-reduced-motion:reduce) { .c-game * { transition:none !important; } }
+</style>
+</head>
+<body>
+<main class="c-game">
+  <header class="c-top"><div><h1 class="c-title">此劫难渡</h1><p class="c-register">散修司 · 修行功过簿</p></div><div class="c-stamp">尚在人间</div></header>
+  <div class="c-person"><span>籍贯不详 · 筑基散修</span><span>初次入册</span></div>
+  <section class="c-stats" aria-label="修行状态">
+    <div class="c-stat"><span class="c-label">修为</span><span class="c-num">40<small> /100</small></span></div>
+    <div class="c-stat"><span class="c-label">余寿</span><span class="c-num c-life">18</span></div>
+    <div class="c-stat"><span class="c-label">心魔</span><span class="c-num">0</span></div>
+  </section>
+  <article aria-labelledby="c-event-title">
+    <div class="c-eventhead"><h2 id="c-event-title">最后一炉</h2><span class="c-file">坊市 · 丹药</span></div>
+    <div class="c-story">
+      <p>摊主正在拆招牌。见你停下，他又把“清仓”二字扶正了。“最后一炉养元丹。家师闭关去了，往后有灵石也买不着。”</p>
+      <p>桌上剩下三瓶，封口都很新。旁边竹篓里却有几十张揭下来的旧丹签。你认出其中一张，上个月来时就贴在这里。</p>
+      <p>你问为何换签。他捻掉瓶底一点红末。“师父嫌从前的字不吉利，耽误药效。”</p>
+      <p>他愿意拿一瓶抵工钱，只需你替他温炉半日。若肯帮着把旧丹重新封好，整炉余药都归你。</p>
+    </div>
+    <div class="c-evidence"><strong>所见存证</strong><span>新封口 ／ 旧丹签 ／ 瓶底红末</span></div>
+    <div class="c-choices-title"><span>请择一项，后果入簿</span><span>口头保证，不作凭据</span></div>
+    <div class="c-choices" aria-label="选择行动">
+      <button class="c-action" data-c-action="inspect"><span class="c-index">甲</span><span class="c-actionname">先验药</span><span class="c-actionmeta"><span>取半粒辨药性</span><span>余寿 −1</span></span></button>
+      <button class="c-action" data-c-action="bottle"><span class="c-index">乙</span><span class="c-actionname">只取一瓶</span><span class="c-actionmeta"><span>温炉换丹</span><span>修为 +10 · 余寿 −1</span></span></button>
+      <button class="c-action" data-c-action="all"><span class="c-index">丙</span><span class="c-actionname">包下余药</span><span class="c-actionmeta"><span>封好旧丹</span><span>修为 +22 · 余寿 −1</span></span></button>
+      <button class="c-action" data-c-action="leave"><span class="c-index">丁</span><span class="c-actionname">离开</span><span class="c-actionmeta"><span>记住丹号</span><span>余寿 −1</span></span></button>
+    </div>
+  </article>
+  <div class="c-outcome" role="status" aria-live="polite" hidden></div>
+  <nav class="c-tools" aria-label="修行操作"><button data-c-action="body">内观</button><button data-c-action="calm">静心</button><button data-c-action="trial">渡劫 · 修为不足</button></nav>
+  <p class="c-footer">功过自记，天道不受理口头申诉。</p>
+</main>
+<script>
+(() => {
+ const cRoot = document.querySelector('.c-game');
+ const cOutput = cRoot.querySelector('.c-outcome');
+ const cFeedback = {
+  inspect:'<strong>验药记录</strong>　药力尚足，红末却是未炼净的杂质。可重新炼化，但会损失部分药力。',
+  bottle:'<strong>行动预览</strong>　温炉换一瓶丹，获得修为，也可能留下丹毒。正式游戏将结算心魔与已知成本。',
+  all:'<strong>行动预览</strong>　封好旧丹，取得余药。大量服用会提高丹毒风险，并增加心魔。',
+  leave:'<strong>行动预览</strong>　记下这批丹号。今后再遇到相同丹药，你能认出来。',
+  body:'<strong>内观</strong>　此刻未见身体征兆。正式游戏可借此查明已发生的隐患。',
+  calm:'<strong>静心</strong>　当前心魔为零，暂时无须静心。',
+  trial:'<strong>渡劫条件</strong>　修为达到 100，方可准备渡劫。当前修为为 40。'
+ };
+ cRoot.addEventListener('click', cEvent => {
+  const cButton = cEvent.target.closest('[data-c-action]');
+  if (!cButton) return;
+  cRoot.querySelectorAll('.c-selected').forEach(cElement => cElement.classList.remove('c-selected'));
+  cButton.classList.add('c-selected');
+  cOutput.innerHTML = cFeedback[cButton.dataset.cAction] + '<br><span>样机演示，不扣除数值。</span>';
+  cOutput.hidden = false;
+ });
+})();
+</script>
+</body>
+</html>

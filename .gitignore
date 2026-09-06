@@ -9,4 +9,5 @@ coverage/
 test-results/
 playwright-report/
 design-previews/**/selection.json
+design-previews/**/selection.json.*
 design-previews/**/.qa/

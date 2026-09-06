@@ -1,0 +1,106 @@
+{
+  "seeds": "1..1000",
+  "rulesVersion": 4,
+  "note": "固定启发式策略，不读取隐藏结果，不代表真实玩家胜率。胜局余寿只统计成功结丹者。",
+  "results": [
+    {
+      "policy": "skip",
+      "label": "只取低风险、不调查",
+      "runs": 1000,
+      "endings": {
+        "寿尽坐化": 1000
+      },
+      "averageActions": 12,
+      "averageInvestigations": 0,
+      "winningLife": null,
+      "maxSaveBytes": 5241
+    },
+    {
+      "policy": "all",
+      "label": "逢事必调查",
+      "runs": 1000,
+      "endings": {
+        "寿尽坐化": 384,
+        "成功结丹": 616
+      },
+      "averageActions": 10.85,
+      "averageInvestigations": 2.94,
+      "winningLife": {
+        "average": 1.87,
+        "min": 1,
+        "max": 4
+      },
+      "maxSaveBytes": 6229
+    },
+    {
+      "policy": "selective",
+      "label": "比较成本后调查",
+      "runs": 1000,
+      "endings": {
+        "寿尽坐化": 274,
+        "成功结丹": 726
+      },
+      "averageActions": 10.37,
+      "averageInvestigations": 2.8,
+      "winningLife": {
+        "average": 2.24,
+        "min": 1,
+        "max": 4
+      },
+      "maxSaveBytes": 6229
+    },
+    {
+      "policy": "one-risk",
+      "label": "开局赌一次，其后规划",
+      "runs": 1000,
+      "endings": {
+        "寿尽坐化": 283,
+        "成功结丹": 717
+      },
+      "averageActions": 10.12,
+      "averageInvestigations": 2.66,
+      "winningLife": {
+        "average": 2.47,
+        "min": 1,
+        "max": 4
+      },
+      "maxSaveBytes": 6229
+    },
+    {
+      "policy": "greedy",
+      "label": "只追即时收益",
+      "runs": 1000,
+      "endings": {
+        "渡劫失败": 912,
+        "心魔失控": 86,
+        "成功结丹": 1,
+        "寿尽坐化": 1
+      },
+      "averageActions": 6.18,
+      "averageInvestigations": 0,
+      "winningLife": {
+        "average": 6,
+        "min": 6,
+        "max": 6
+      },
+      "maxSaveBytes": 5643
+    },
+    {
+      "policy": "repair",
+      "label": "持续冒险并补救",
+      "runs": 1000,
+      "endings": {
+        "成功结丹": 246,
+        "寿尽坐化": 754
+      },
+      "averageActions": 9.4,
+      "averageInvestigations": 0,
+      "winningLife": {
+        "average": 2.82,
+        "min": 1,
+        "max": 6
+      },
+      "maxSaveBytes": 6175
+    }
+  ]
+}

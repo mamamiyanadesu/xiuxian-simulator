@@ -31,7 +31,7 @@
 
 `npm ci` 后运行 `npm run dev`，默认本机 5173 端口。`npm run build && npm run preview` 使用生产产物，默认本机 4173 端口。端口之间存档独立。
 
-本次交付使用 `design/visual-directions` 分支保存预览与首版实现，main 不直接覆盖。未部署公网网站。
+本次交付使用 `design/visual-directions` 分支保存实现，main 不直接覆盖。2026-09-06 用户明确授权公网部署，已发布到 https://mamamiyanadesu.github.io/xiuxian-simulator/ ，该分支代码更新后自动测试并部署。见 `docs/DEPLOYMENT.md`。
 
 ## 已知限制与后续建议
 
@@ -43,4 +43,4 @@
 
 ## 修改边界
 
-只改项目文件；不改全局配置、Skills 或记忆。不引入账号、付费接口、外部生成、公网部署或开源许可证。后续功能在分支与 PR 中审查，勿把旧方案样机当成生产入口。
+只改项目文件及本仓库已授权的 Pages 部署配置；不改全局配置、Skills 或记忆。不引入账号、付费接口、外部生成或开源许可证。后续功能在分支与 PR 中审查，发布分支代码推送会更新公网游戏，勿把旧方案样机当成生产入口。

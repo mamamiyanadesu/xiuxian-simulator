@@ -27,10 +27,11 @@ export function strategy(s: Game, policy: Policy): Action {
   const value = (c: Choice) => (c.gain - choiceCost(s, c).cultivation) / choiceCost(s, c).life;
   const available = e.choices.filter(c => !choiceBlock(s, c));
   const safe = available.filter(c => !c.risk && c.contract !== 'accept' && !c.cure).sort((a, b) => value(b) - value(a));
-  if (policy === 'all' && e.investigation && !s.encounterState.investigated) return { type: 'investigate' };
+  if (policy === 'all' && !actionBlock(s, { type: 'investigate' })) return { type: 'investigate' };
   if (policy === 'one-risk' && e.id === 'last_batch' && !s.encounterState.investigated) return { type: 'choose', id: 'one' };
   if (policy === 'greedy' || policy === 'repair') return { type: 'choose', id: available.sort((a, b) => value(b) - value(a))[0].id };
-  if (policy !== 'skip' && e.investigation && !s.encounterState.investigated) {
+  if (policy !== 'skip' && !actionBlock(s, { type: 'investigate' })) {
+    if (s.heartDemon >= RULES.cloudedHeart) return { type: 'meditate' };
     const afterResearch = e.choices.filter(c => c.investigated && !c.risk && !c.refund);
     if (afterResearch.some(c => c.gain / ((c.life ?? 1) + 1) > value(safe[0]))) return { type: 'investigate' };
   }

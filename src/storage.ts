@@ -3,7 +3,7 @@ import { EVENT_MAP } from './events.ts';
 import { hazardKinds } from './engine.ts';
 import type { Game } from './types.ts';
 
-export const SAVE_KEY = 'cijienandu.save.rules2';
+export const SAVE_KEY = 'cijienandu.save.rules3';
 export const LEGACY_SAVE_KEY = 'cijienandu.save.v1';
 type StorageLike = Pick<Storage, 'getItem' | 'setItem'>;
 export type LoadResult = { kind: 'empty'; message?: string } | { kind: 'valid'; game: Game } |
@@ -14,7 +14,8 @@ const str = (v: unknown): v is string => typeof v === 'string' && v.length <= 30
 const strings = (v: unknown): v is string[] => Array.isArray(v) && v.length <= 100 && v.every(str);
 const eventId = (v: unknown): v is string => typeof v === 'string' && Object.hasOwn(EVENT_MAP, v);
 function encounterState(v: unknown, id: string) {
-  return obj(v) && typeof v.investigated === 'boolean' && obj(v.rolls) &&
+  return obj(v) && typeof v.investigated === 'boolean' && typeof v.impulseRoll === 'number' &&
+    Number.isFinite(v.impulseRoll) && v.impulseRoll >= 0 && v.impulseRoll < 1 && obj(v.rolls) &&
     Object.keys(v.rolls).length === EVENT_MAP[id].choices.length && EVENT_MAP[id].choices.every(c => {
       const roll = (v.rolls as Record<string, unknown>)[c.id];
       return typeof roll === 'number' && Number.isFinite(roll) && roll >= 0 && roll < 1;
@@ -24,6 +25,7 @@ export function validGame(v: unknown): v is Game {
   if (!obj(v) || v.version !== RULES.version || v.rulesVersion !== RULES.rulesVersion ||
     !int(v.seed, 4294967295) || !int(v.rngState, 4294967295) || !int(v.revision) ||
     !int(v.cultivation) || !int(v.life, RULES.startLife) || !int(v.heartDemon, RULES.heartLimit) ||
+    !int(v.investigations, RULES.investigationCap) || !int(v.safeStreak, RULES.investigationRecovery - 1) ||
     !int(v.encounterCount, 1000) || !eventId(v.encounterId) || !encounterState(v.encounterState, v.encounterId) ||
     !strings(v.flags) || !strings(v.seenEvents) || !v.seenEvents.every(eventId)) return false;
   if (!Array.isArray(v.hazards) || v.hazards.length > 3 || !v.hazards.every(h =>
@@ -48,7 +50,7 @@ export function loadGame(storage: StorageLike): LoadResult {
   let raw: string | null;
   try {
     raw = storage.getItem(SAVE_KEY);
-    if (raw === null && storage.getItem(LEGACY_SAVE_KEY) !== null) return { kind: 'empty', message: '新版余寿缩为 12，机缘与补救收益已调整。旧版行笺另存保留，启程将开始新版的一局。' };
+    if (raw === null && [LEGACY_SAVE_KEY, 'cijienandu.save.rules2'].some(key => storage.getItem(key) !== null)) return { kind: 'empty', message: '新版调查次数有限，心魔高时调查会失控。旧版行笺另存保留，启程将开始新版的一局。' };
   } catch { return { kind: 'unavailable', message: '浏览器未允许本地存档。本局仍可修行，关闭页面后无法恢复。' }; }
   if (raw === null) return { kind: 'empty' };
   try {

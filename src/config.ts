@@ -1,7 +1,8 @@
 import type { HazardKind } from './types.ts';
 
 export const RULES = {
-  version: 1, rulesVersion: 2, startCultivation: 40, startLife: 12,
+  version: 2, rulesVersion: 3, startCultivation: 40, startLife: 12,
+  investigationCap: 2, investigationRecovery: 3, cloudedHeart: 40,
   threshold: 100, heartLimit: 100, tribulationHeart: 60,
   rewardTiers: [6, 10, 16, 22], heartTiers: [2, 5, 10, 22],
   remedyLife: 2, remedyCultivation: 6, meditationReduction: 20,

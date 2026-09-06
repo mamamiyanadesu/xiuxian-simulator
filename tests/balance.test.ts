@@ -31,7 +31,7 @@ test('a moderate gamble saves investigation time but its stored outcome can cons
   assert.equal(riskLabel(.6), '风险高');
 });
 
-test('starting or saving a rules-2 run preserves the old rules-1 save byte for byte', () => {
+test('starting or saving a current run preserves the old rules-1 save byte for byte', () => {
   const old = JSON.stringify({ ...createGame(1), rulesVersion: 1, life: 18 });
   const records = new Map([[LEGACY_SAVE_KEY, old]]);
   const store = { getItem: (k: string) => records.get(k) ?? null, setItem: (k: string, v: string) => { records.set(k, v); } };

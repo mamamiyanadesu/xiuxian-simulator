@@ -1,6 +1,6 @@
 {
   "seeds": "1..1000",
-  "rulesVersion": 2,
+  "rulesVersion": 3,
   "note": "固定启发式策略，不读取隐藏结果，不代表真实玩家胜率。胜局余寿只统计成功结丹者。",
   "results": [
     {
@@ -13,92 +13,92 @@
       "averageActions": 12,
       "averageInvestigations": 0,
       "winningLife": null,
-      "maxSaveBytes": 4709
+      "maxSaveBytes": 4778
     },
     {
       "policy": "all",
       "label": "逢事必调查",
       "runs": 1000,
       "endings": {
-        "寿尽坐化": 446,
-        "成功结丹": 554
+        "成功结丹": 555,
+        "寿尽坐化": 445
       },
-      "averageActions": 11.07,
-      "averageInvestigations": 4.54,
+      "averageActions": 10.89,
+      "averageInvestigations": 3.27,
       "winningLife": {
-        "average": 1.69,
+        "average": 1.99,
         "min": 1,
         "max": 3
       },
-      "maxSaveBytes": 5202
+      "maxSaveBytes": 5423
     },
     {
       "policy": "selective",
       "label": "比较成本后调查",
       "runs": 1000,
       "endings": {
-        "成功结丹": 957,
-        "寿尽坐化": 43
+        "成功结丹": 946,
+        "寿尽坐化": 54
       },
-      "averageActions": 9.82,
-      "averageInvestigations": 2.27,
+      "averageActions": 9.9,
+      "averageInvestigations": 2.26,
       "winningLife": {
-        "average": 2.27,
+        "average": 2.22,
         "min": 1,
         "max": 3
       },
-      "maxSaveBytes": 5026
+      "maxSaveBytes": 5297
     },
     {
       "policy": "one-risk",
       "label": "开局赌一次，其后规划",
       "runs": 1000,
       "endings": {
-        "成功结丹": 768,
-        "寿尽坐化": 232
+        "成功结丹": 757,
+        "寿尽坐化": 243
       },
-      "averageActions": 9.18,
-      "averageInvestigations": 1.26,
+      "averageActions": 9.22,
+      "averageInvestigations": 1.29,
       "winningLife": {
-        "average": 3.35,
+        "average": 3.34,
         "min": 1,
         "max": 5
       },
-      "maxSaveBytes": 4935
+      "maxSaveBytes": 5333
     },
     {
       "policy": "greedy",
       "label": "只追即时收益",
       "runs": 1000,
       "endings": {
-        "渡劫失败": 826,
-        "成功结丹": 174
+        "成功结丹": 121,
+        "渡劫失败": 879
       },
-      "averageActions": 4.79,
+      "averageActions": 4.74,
       "averageInvestigations": 0,
       "winningLife": {
-        "average": 7.1,
+        "average": 6.74,
         "min": 5,
         "max": 8
       },
-      "maxSaveBytes": 4193
+      "maxSaveBytes": 4063
     },
     {
       "policy": "repair",
       "label": "持续冒险并补救",
       "runs": 1000,
       "endings": {
-        "成功结丹": 480,
-        "寿尽坐化": 520
+        "成功结丹": 491,
+        "寿尽坐化": 509
       },
-      "averageActions": 8.24,
+      "averageActions": 8.44,
       "averageInvestigations": 0,
       "winningLife": {
-        "average": 4.28,
+        "average": 3.67,
         "min": 1,
         "max": 8
       },
-      "maxSaveBytes": 5138
+      "maxSaveBytes": 5242
     }
   ]
 }

@@ -20,7 +20,8 @@ export interface Game {
   version: number; rulesVersion: number; seed: number; rngState: number;
   phase: 'encounter' | 'feedback' | 'ended'; revision: number;
   cultivation: number; life: number; heartDemon: number;
-  encounterId: string; encounterState: { investigated: boolean; rolls: Record<string, number> };
+  investigations: number; safeStreak: number;
+  encounterId: string; encounterState: { investigated: boolean; impulseRoll: number; rolls: Record<string, number> };
   encounterCount: number; hazards: Hazard[]; flags: string[];
   interrupted: null | { id: string; state: Game['encounterState'] };
   pending: null | { due: number; gain: number; investigated: boolean };

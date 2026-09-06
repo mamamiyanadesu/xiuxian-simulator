@@ -14,6 +14,7 @@ function enter(s: Game, id: string) {
   if (id !== 'quiet' && !s.seenEvents.includes(id)) s.seenEvents.push(id);
   s.encounterState = {
     investigated: id === 'fire' && !!s.pending?.investigated,
+    impulseRoll: random(s),
     rolls: Object.fromEntries(EVENT_MAP[id].choices.map(c => [c.id, random(s)])),
   };
 }
@@ -31,7 +32,8 @@ export function createGame(seed: number): Game {
   const s: Game = {
     version: RULES.version, rulesVersion: RULES.rulesVersion, seed: normalized, rngState: normalized,
     phase: 'encounter', revision: 0, cultivation: RULES.startCultivation, life: RULES.startLife,
-    heartDemon: 0, encounterId: 'last_batch', encounterState: { investigated: false, rolls: {} },
+    heartDemon: 0, investigations: RULES.investigationCap, safeStreak: 0,
+    encounterId: 'last_batch', encounterState: { investigated: false, impulseRoll: 0, rolls: {} },
     encounterCount: 0, hazards: [], flags: [], pending: null, interrupted: null, seenEvents: [], history: [], feedback: null, ending: null,
   };
   enter(s, 'last_batch');
@@ -58,7 +60,7 @@ export function actionBlock(s: Game, a: Action): string | null {
     const c = e.choices.find(c => c.id === a.id);
     return c ? choiceBlock(s, c) : '没有这个选择';
   }
-  if (a.type === 'investigate') return !e.investigation ? '此处没有可进一步调查的内容' : s.encounterState.investigated ? '已经查明，不必重复花费' : null;
+  if (a.type === 'investigate') return !e.investigation ? '此处没有可进一步调查的内容' : s.encounterState.investigated ? '此处已调查，不能重复' : s.investigations <= 0 ? '调查次数已用尽' : null;
   if (a.type === 'diagnose') return s.hazards.some(h => !h.diagnosed) ? null : '没有尚未查明的征兆';
   if (a.type === 'remedy') {
     if (!s.hazards.some(h => h.kind === a.kind && h.diagnosed)) return '先内观查明隐患';
@@ -75,11 +77,16 @@ export function actionBlock(s: Game, a: Action): string | null {
 export function lifeCost(s: Game, a: Action): number {
   if (a.type === 'continue' || a.type === 'settle') return 0;
   if (a.type === 'remedy') return RULES.remedyLife;
+  if (a.type === 'investigate' && s.heartDemon >= RULES.cloudedHeart) return 1 + choiceCost(s, impulsiveChoice(s)).life;
   if (a.type === 'choose') {
     const c = currentEvent(s).choices.find(c => c.id === a.id);
     return c ? choiceCost(s, c).life : 0;
   }
   return 1;
+}
+function impulsiveChoice(s: Game): Choice {
+  const choices = currentEvent(s).choices.filter(c => !choiceBlock(s, c));
+  return choices[Math.floor(s.encounterState.impulseRoll * choices.length)];
 }
 export function knownTribulationRisks(s: Game): string[] {
   const risks: string[] = [];
@@ -124,6 +131,27 @@ export function transition(previous: Game, a: Action, expectedRevision = previou
     enter(s, 'fire');
     return s;
   }
+  if (a.type === 'investigate' && s.heartDemon >= RULES.cloudedHeart) {
+    const chosen = impulsiveChoice(s);
+    const e = currentEvent(s);
+    s.investigations--; s.safeStreak = 0; s.life = Math.max(0, s.life - 1);
+    const report = `你本想查个明白，心里却只剩“先做了再说”。心魔替你选了“${chosen.label}”。调查次数 −1，调查另耗 1 寿元；选项代价另计。`;
+    s.history.push({ event: e.id, title: e.title, action: '调查失控', result: report,
+      truth: `心魔达到 ${RULES.cloudedHeart}，调查失控；从当时合法选项中等概率选择，未获得调查依据。`,
+      delta: { cultivation: 0, life: s.life - previous.life, heart: 0 } });
+    s.feedback = { title: '调查失控', text: report, advance: false };
+    terminal(s);
+    if (s.phase === 'ended') {
+      s.history.at(-1)!.result = '你耗尽最后 1 寿元，尚未来得及执行失控选项。调查次数 −1。';
+      s.feedback.text = s.history.at(-1)!.result;
+      return s;
+    }
+    s.feedback = null;
+    const resolved = transition(s, { type: 'choose', id: chosen.id });
+    resolved.feedback!.title = '调查失控';
+    resolved.feedback!.text = `${report} ${resolved.feedback!.text}`;
+    return resolved;
+  }
   const e = currentEvent(s);
   let result = '', label = '', advance = false, symptom: string | undefined;
   let truth = e.truth;
@@ -145,7 +173,19 @@ export function transition(previous: Game, a: Action, expectedRevision = previou
     } else if (c.risk) result += ' 此番行气未见异样。';
     if (c.contract === 'accept') s.pending = { due: s.encounterCount + 1 + Math.floor(random(s) * 2), gain: c.gain, investigated: s.encounterState.investigated };
     if (c.contract === 'settle') s.pending = null;
+    // Only substantive, uncomplicated gains count. Routine one-life fees and small heart gains do not.
+    const uneventful = c.gain > cost.cultivation && cost.cultivation === 0 && cost.life === 1 && !symptom &&
+      !previous.hazards.length && !previous.pending && !s.hazards.length && !s.pending && !c.cure;
+    if (!uneventful || s.heartDemon >= RULES.cloudedHeart) s.safeStreak = 0;
+    else if (s.investigations < RULES.investigationCap) {
+      s.safeStreak++;
+      if (s.safeStreak >= RULES.investigationRecovery) {
+        s.investigations++; s.safeStreak = 0;
+        result += ' 连着三回得了好处，没添别的账。你终于肯再耐下性子查一回。调查次数 +1。';
+      }
+    } else s.safeStreak = 0;
   } else if (a.type === 'investigate') {
+    s.investigations--;
     label = '调查线索'; result = e.investigation!; s.encounterState.investigated = true;
     if (e.id === 'last_batch') s.flags = [...new Set([...s.flags, 'batch_known'])];
   } else if (a.type === 'diagnose') {
@@ -159,6 +199,7 @@ export function transition(previous: Game, a: Action, expectedRevision = previou
     truth = `“${source.title}”留下的${a.kind}已被清除。${source.truth}`;
     result = `你花去 ${RULES.remedyLife} 寿元，散掉 ${RULES.remedyCultivation} 修为，将${a.kind}清理干净。其余修为仍留在体内。`;
     s.hazards = s.hazards.filter(h => h.kind !== a.kind);
+    s.safeStreak = 0;
   } else if (a.type === 'meditate') {
     label = '静心'; s.heartDemon = Math.max(0, s.heartDemon - RULES.meditationReduction);
     truth = '静心降低心魔，不会化解身体隐患，也不会改写已签的约定。';

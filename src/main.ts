@@ -32,7 +32,13 @@ function metrics(s: Game) {
     <div><span class="metric-label">修为 <small>筑基 → 金丹</small></span><p class="number">${s.cultivation}<small> / ${RULES.threshold}</small></p><div class="track"><span style="transform:scaleX(${Math.min(1, s.cultivation / RULES.threshold)})"></span></div></div>
     <div><span class="metric-label">余寿</span><p class="number ${s.life <= 4 ? 'danger' : ''}">${s.life}<small> 寿元</small></p><div class="track life"><span style="transform:scaleX(${s.life / RULES.startLife})"></span></div></div>
     <div><span class="metric-label">心魔</span><p class="number ${s.heartDemon >= 60 ? 'danger' : ''}">${s.heartDemon}<small> / 100</small></p><div class="track heart"><span style="transform:scaleX(${s.heartDemon / 100})"></span></div></div>
-  </section>${s.phase === 'encounter' ? budget(s) : ''}`;
+  </section>${s.phase === 'encounter' ? budget(s) + investigationStatus(s) : ''}`;
+}
+function investigationStatus(s: Game) {
+  const clouded = s.heartDemon >= RULES.cloudedHeart;
+  const progress = clouded ? '心魔扰念：停止恢复，调查将随机执行一个可选项' :
+    s.investigations === RULES.investigationCap ? '次数已满，不储存额外恢复进度' : `连续顺遂 ${s.safeStreak}/${RULES.investigationRecovery} · 满三次恢复一次`;
+  return `<aside class="closing-budget ${clouded || s.investigations === 0 ? 'tight' : ''}" aria-label="调查余力"><p><strong>调查余力 ${s.investigations}/${RULES.investigationCap}</strong><span>每次另耗 1 寿元</span></p><small>${progress}</small></aside>`;
 }
 function journey(s: Game) {
   return `<div class="journey"><span>山门之外</span><span class="journey-line" aria-hidden="true"></span><span>第 ${s.encounterCount} 程 · ${esc(currentEvent(s).place)}</span></div>`;
@@ -57,7 +63,7 @@ function status(s: Game, actionable = true) {
 }
 function actions(s: Game) {
   const e = currentEvent(s);
-  return `<div class="choices" aria-label="作出选择">${e.investigation ? button(s.encounterState.investigated ? '线索已查明' : '先调查线索', 'investigate', { detail: s.encounterState.investigated ? '已取得依据，不再消耗寿元' : '余寿 −1 · 留在当前遭遇', disabled: actionBlock(s, { type: 'investigate' }), revision: s.revision }) : ''}
+  return `<div class="choices" aria-label="作出选择">${e.investigation ? button(s.encounterState.investigated ? '线索已查明' : s.heartDemon >= RULES.cloudedHeart ? '强行调查 · 将失控' : '先调查线索', 'investigate', { detail: s.encounterState.investigated ? '已取得依据，不再消耗寿元' : s.heartDemon >= RULES.cloudedHeart ? '调查次数 −1 · 余寿 −1 · 随机执行当前可选项，代价另计' : '调查次数 −1 · 余寿 −1 · 留在当前遭遇', disabled: actionBlock(s, { type: 'investigate' }), revision: s.revision }) : ''}
   ${e.choices.map(c => {
     const cost = choiceCost(s, c);
     let detail = `修为 ${c.gain - cost.cultivation >= 0 ? '+' : ''}${c.gain - cost.cultivation} · 余寿 −${cost.life} · 心魔 +${c.heart}`;
@@ -82,7 +88,10 @@ function render(focus = false) {
     let body = '';
     if (s.phase === 'encounter') body = `<section class="view encounter"><div class="event-heading"><h1 tabindex="-1">${esc(e.title)}</h1></div><div class="story">${e.paragraphs.map(p => `<p>${esc(p)}</p>`).join('')}</div><ul class="clues" aria-label="已见线索">${e.clues.map(c => `<li>${esc(c)}</li>`).join('')}</ul>${s.encounterState.investigated && e.investigation ? `<p class="investigation"><span class="small-label">已查明</span>${esc(e.investigation)}</p>` : ''}${s.hazards.length || s.pending ? status(s) : ''}${actions(s)}${s.hazards.length || s.pending ? '' : status(s)}${toolsBar(s)}</section>`;
     if (s.phase === 'feedback') {
-      const h = s.history.at(-1)!;
+      const h = structuredClone(s.history.at(-1)!);
+      if (s.feedback!.title === '调查失控' && s.history.at(-2)?.action === '调查失控') {
+        h.delta.life += s.history.at(-2)!.delta.life;
+      }
       body = `<section class="view feedback"><span class="small-label">这一笔已记下</span><h1 tabindex="-1">${esc(s.feedback!.title)}</h1><p class="story">${esc(s.feedback!.text)}</p>${delta(h)}${h.symptom ? `<p class="symptom standalone">${esc(h.symptom)}</p>` : ''}${button(s.feedback!.advance ? '继续前行' : '回到眼前的机缘', 'continue', { primary: true, revision: s.revision })}<p class="fine">${s.feedback!.advance ? '读完结果再向前走。' : '当前遭遇保留，方才的调查或调息不会重抽机缘。'}</p></section>`;
     }
     if (s.phase === 'ended') body = `<section class="view ending"><span class="small-label">行笺终页</span><h1 tabindex="-1">${esc(s.ending!.title)}</h1>${s.ending!.reasons.map(r => `<p class="story">${esc(r)}</p>`).join('')}<div class="last-action"><span class="small-label">最后一次行动 · ${esc(s.history.at(-1)!.action)}</span>${delta(s.history.at(-1)!)}<p>${esc(s.history.at(-1)!.result)}</p></div>${button('再修一世', 'new', { primary: true })}<p class="ending-note">${s.ending!.title === '成功结丹' ? '山路还长。这回，能慢些走了。' : '若再来一世，有些话你会多听半句。'}</p></section>`;
@@ -119,6 +128,8 @@ function act(action: Action, revision: number) {
   if (action.type === 'tribulate') {
     const risks = knownTribulationRisks(game);
     modal('引雷之前', `<p>渡劫消耗 1 寿元。雷落后须余寿仍存、修为至少 100、心魔低于 60、身体无隐患。</p>${risks.length ? `<ul class="risk-list">${risks.map(r => `<li>${esc(r)}</li>`).join('')}</ul><p>眼下强行引雷将失败。你仍可选择承担这个结果。</p>` : '<p>眼下各项条件齐备。没有额外的成败掷签，可以引雷。</p>'}`, { label: risks.length ? '仍要引雷' : '引雷结丹', run });
+  } else if (action.type === 'investigate' && game.heartDemon >= RULES.cloudedHeart) {
+    modal('心魔替你作主', `<p>心魔达到 ${RULES.cloudedHeart}。仍要调查，会先扣 1 次调查和 1 寿元，再随机执行一个当前可选项，照常承担该选项的寿元、心魔、隐患与契约后果；不会获得调查线索。</p><p>结果已随这次遭遇固定，刷新不会重抽。</p>${lifeCost(game, action) >= game.life ? '<p class="danger">余寿不足以活过这次行动，继续将寿尽坐化。</p>' : ''}`, { label: '任心魔作主', run });
   } else if (lifeCost(game, action) >= game.life && lifeCost(game, action) > 0) {
     modal('这是最后一次行动', `<p>本次消耗 ${lifeCost(game, action)} 寿元，你只余 ${game.life}。做完将寿尽坐化，所得也无法带入下一次行动。</p>`, { label: '仍作此选择', run });
   } else run();
@@ -128,7 +139,7 @@ app.addEventListener('click', event => {
   if (!target || target.hasAttribute('disabled')) return;
   event.preventDefault();
   const id = target.dataset.action!;
-  if (id === 'help') return modal('修行须知', `<p>你是一名寿元将尽的筑基散修。修为从 40 起，达到 100 后可准备渡劫。</p><p>余寿只有 ${RULES.startLife}。渡劫耗 1，渡劫后还须留 1 活命，开局真正可花的只有 ${RULES.startLife - 2}。调查、内观、静心各耗 1；化解一处隐患耗 ${RULES.remedyLife} 余寿、${RULES.remedyCultivation} 修为。</p><p>心魔到 100，当场失控。渡劫时心魔须低于 60，还须余寿仍存、身体无隐患。静心最多降低 20 心魔。</p><p>调查还要另花时间落实收益。有些调查能多拿一份，有些只让做事更安心。每次都查，可能来不及结丹；直接争机缘能省时间，也可能吃掉补救的余量。</p><p>看清线索再决定。身体异样一旦出现，就有真实来处；内观能查明，调息能补救。调查与调息保留当前机缘，刷新也不会重新掷签。</p><p>许下的看炉约定要了结，才能渡劫。退出条款在签约前可见。</p><p>关闭页面会保留当前一局。另起一世会替换旧记录。</p>`);
+  if (id === 'help') return modal('修行须知', `<p>你是一名寿元将尽的筑基散修。修为从 40 起，达到 100 后可准备渡劫。</p><p>余寿只有 ${RULES.startLife}。渡劫耗 1，渡劫后还须留 1 活命，开局真正可花的只有 ${RULES.startLife - 2}。调查、内观、静心各耗 1；化解一处隐患耗 ${RULES.remedyLife} 余寿、${RULES.remedyCultivation} 修为。</p><p>心魔到 100，当场失控。渡劫时心魔须低于 60，还须余寿仍存、身体无隐患。静心最多降低 20 心魔。</p><p>调查余力开局 ${RULES.investigationCap} 次，上限 ${RULES.investigationCap}。每次消耗 1 次余力和 1 寿元。心魔低于 ${RULES.cloudedHeart} 时，连续 ${RULES.investigationRecovery} 次顺利取得收益恢复 1 次；正常 1 寿元消耗和少量心魔增长不算受挫。有伤病、未了契约、还款、额外耗时或补救会打断进度；离开、调查、静心不增加进度。满额不积攒进度。</p><p>心魔达到 ${RULES.cloudedHeart} 后停止恢复，顺遂进度清零。此时调查会失控：先付调查代价，再随机执行一个当前可选项，照常承担它的全部后果，不获得调查依据。静心可降低心魔，但不会直接恢复次数。</p><p>调查还要另花时间落实收益。有些调查能多拿一份，有些只让做事更安心。每次都查，可能来不及结丹；直接争机缘能省时间，也可能吃掉补救的余量。</p><p>看清线索再决定。身体异样一旦出现，就有真实来处；内观能查明，调息能补救。清醒调查与调息保留当前机缘；失控调查会执行选择并推进机缘。刷新不会重新掷签。</p><p>许下的看炉约定要了结，才能渡劫。退出条款在签约前可见。</p><p>关闭页面会保留当前一局。另起一世会替换旧记录。</p>`);
   if (id === 'home') { playing = false; render(true); return; }
   if (id === 'resume') { playing = true; render(true); return; }
   if (id === 'new') return newGame();

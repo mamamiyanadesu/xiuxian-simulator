@@ -8,7 +8,7 @@ import type { Game, Action } from '../src/types.ts';
 
 function at(id: string, rolls = .01): Game {
   const s = createGame(7); s.encounterId = id; s.seenEvents = [id];
-  s.encounterState = { investigated: false, rolls: Object.fromEntries(EVENT_MAP[id].choices.map(c => [c.id, rolls])) };
+  s.encounterState = { investigated: false, impulseRoll: rolls, rolls: Object.fromEntries(EVENT_MAP[id].choices.map(c => [c.id, rolls])) };
   return s;
 }
 function step(s: Game, action: Action) { const n = transition(s, action); return n.phase === 'feedback' ? transition(n, { type: 'continue' }) : n; }
